@@ -8,6 +8,30 @@ document.getElementById("row-1").addEventListener("click", () => {
     window.location.assign("../Movie/Movie.html")
 })
 
+function generateTableRow(){
+    
+        const data = [,
+            
+            {movie: "Dune",
+            review: 9},
+            {movie: "It",
+            review: 8}
+        ]
+        
+   
+     for(let i = 0; i < data.length; i++){
+        const tr = document.createElement("tr");
+        const dataObject = data[i]
+        for(let key in dataObject){
+            const td = document.createElement("td");
+            td.innerHTML = dataObject[key]
+            tr.appendChild(td)
+        }
+        tableBody.appendChild(tr)
+    }
+    
+}
+generateTableRow()
 // const logoutBtn = document.querySelector()
 
 
@@ -45,28 +69,3 @@ document.getElementById("row-1").addEventListener("click", () => {
 //     window.location.assign("../Login/login.html");
 // });
 
-
-function generateTableRow(){
-    
-        const data = [,
-            
-            {movie: "Dune",
-            review: 9},
-            {movie: "It",
-            review: 8}
-        ]
-        
-   
-     for(let i = 0; i < data.length; i++){
-        const tr = document.createElement("tr");
-        const dataObject = data[i]
-        for(let key in dataObject){
-            const td = document.createElement("td");
-            td.innerHTML = dataObject[key]
-            tr.appendChild(td)
-        }
-        tableBody.appendChild(tr)
-    }
-    
-}
-generateTableRow()
