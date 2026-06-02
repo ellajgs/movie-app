@@ -9,8 +9,8 @@ class Review{
     }
 
     static async create(data){
-        const {movie_name, movie_score, comments} = data;
-        let response = await db.query("INSERT INTO reviews (user_rating, comments) VALUE ($1,$2) RETURNING *;" [user_rating, comments])
+        const {movieName, movieScore, comments, userID} = data;
+        let response = await db.query("INSERT INTO reviews (user_rating, comments) VALUE ($1,$2) RETURNING *;" [movieScore, comments])
         return new Review(response.rows[0])
     }
 
