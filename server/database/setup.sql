@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS reviews (
     id INT GENERATED ALWAYS AS IDENTITY
     user_id INT REFERENCES users(id)
     movie_id INT REFERENCES movies(id)
-    user_rating INT (user_rating BETWEEN 0 and 10)
+    user_rating FLOAT
     comments VARCHAR(500)
     PRIMARY KEY (id)
 )
