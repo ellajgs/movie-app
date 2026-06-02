@@ -1,4 +1,7 @@
 const db = require(`../database/connect`)
+
+const Movie = require('./Movie')
+
 class Review{
     constructor({id, user_id, movie_id, user_rating, comments}){
         this.id=id
@@ -10,6 +13,9 @@ class Review{
 
     static async create(data){
         const {movieName, movieScore, comments, userID} = data;
+
+        const movie = await Movie.findOrAdd(movie)
+
         let response = await db.query("INSERT INTO reviews (user_rating, comments) VALUES ($1,$2) RETURNING *;" [movieScore, comments])
         return new Review(response.rows[0])
     }

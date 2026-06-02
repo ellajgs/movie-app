@@ -15,7 +15,7 @@ CREATE TABLE movies (
     id INT GENERATED ALWAYS AS IDENTITY,
     title VARCHAR(100) UNIQUE,
     imdbRating FLOAT,
-    imdbID VARCHAR,
+    imdbID VARCHAR UNIQUE,
     movieyear INT,
     poster VARCHAR,
     director VARCHAR,

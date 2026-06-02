@@ -61,15 +61,12 @@ class Movie{
             throw new Error(data.Error || 'Movie not found');
         }
 
-        return new Movie({
-            title: data.Title,
-            movieyear: data.Year,
-            poster: data.poster,
-            actors: data.Actors,
-            director: data.director,
-            imdbRating: data.imdbRating,
-            plot: data.plot,
-        })
+        const result = await db.query(
+            `UPDATE movies SET imdbRating = $1 WHERE imdbID = $2 RETURNING *;`,
+            [parseFloat(data.imdbRating) || null, imdbID]
+        );
+
+        return new Movie(result.rows[0]);
     }
 }
 
