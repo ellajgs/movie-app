@@ -14,8 +14,12 @@ CREATE TABLE users (
 CREATE TABLE movies (
     id INT GENERATED ALWAYS AS IDENTITY,
     title VARCHAR(100) UNIQUE,
-    imdb_rating INT,
-    imdb_id VARCHAR,
+    imdbRating INT,
+    imdbID VARCHAR,
+    movieyear INT,
+    poster VARCHAR,
+    director VARCHAR,
+    actors VARCHAR
     PRIMARY KEY (id)
 );
 --Reviews
