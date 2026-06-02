@@ -68,6 +68,17 @@ class Movie{
 
         return new Movie(result.rows[0]);
     }
+
+    static async collectiveRating(movie_id){
+
+        const collectiveRating = await db.query("SELECT AVG(user_rating) FROM reviews WHERE movie_id=$1;", [movie_id])
+
+        if (collectiveRating.rows.length === 0){
+            throw new Error("Unable to locate movie")
+        }
+
+        return collectiveRating
+    }
 }
 
 module.exports= Movie
