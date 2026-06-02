@@ -10,7 +10,15 @@ class Review{
 
     static async create(data){
         const {movieName, movieScore, comments, userID} = data;
-        let response = await db.query("INSERT INTO reviews (user_rating, comments) VALUES ($1,$2) RETURNING *;" [movieScore, comments])
+        const url = `https://www.omdbapi.com/?t=${encodeURIComponent(movieName)}&apikey=${OMDB_API_KEY}`;
+        const response = await fetch(url);
+        const data2 = await response.json();
+
+        if (data2.Response === 'False') {
+            throw new Error(data.Error || 'Movie not found');
+        }
+
+        let response = await db.query("INSERT INTO reviews (user_id, user_rating, comments) VALUES (($1, $2, $3, $4) RETURNING *;" [movieScore, comments])
         return new Review(response.rows[0])
     }
 
