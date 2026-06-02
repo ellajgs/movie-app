@@ -21,8 +21,8 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 
     if (response.status == 200) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("username", data.username)
-        localStorage.setItem("id", data.id)
+        localStorage.setItem("username", data.user.username)
+        localStorage.setItem("id", data.user.id)
         window.location.assign("../Home/Home.html");
       } else {
         alert(data.error);

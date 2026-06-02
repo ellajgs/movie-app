@@ -20,6 +20,7 @@ CREATE TABLE movies (
     poster VARCHAR,
     director VARCHAR,
     actors VARCHAR,
+    plot VARCHAR,
     PRIMARY KEY (id)
 );
 --Reviews
