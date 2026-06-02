@@ -7,4 +7,14 @@ class Review{
         this.user_rating = user_rating
         this.comments = comments
     }
+
+    static async create(data){
+        const {movieName, movieScore, comments, userID} = data;
+        let response = await db.query("INSERT INTO reviews (user_rating, comments) VALUE ($1,$2) RETURNING *;" [movieScore, comments])
+        return new Review(response.rows[0])
+    }
+
+    
 }
+
+module.exports = Review;
