@@ -10,7 +10,13 @@ backButton.addEventListener("click", () => {
 async function getMovieInfo(){
     const movieName = localStorage.getItem("movie-name")
     const options = {
+        methods: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
         body: {
+
             title: movieName
         }
     }
