@@ -43,8 +43,8 @@ VALUES
 -- Seed Movies
 INSERT INTO movies (
     title,
-    imdb_rating,
-    imdb_id,
+    imdbRating,
+    imdbID,
     movie_year,
     poster,
     director,
