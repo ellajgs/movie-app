@@ -4,7 +4,7 @@ const loginController = require("../controllers/users")
 
 const loginRouter = Router()
 
-loginRouter.get("/:name", loginController.show)
+loginRouter.get("/:username", loginController.show)
 loginRouter.post("/register", loginController.create)
 loginRouter.post("/login", loginController.login)
 

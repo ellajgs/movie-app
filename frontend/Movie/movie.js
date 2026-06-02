@@ -10,18 +10,14 @@ backButton.addEventListener("click", () => {
 async function getMovieInfo(){
     const movieName = localStorage.getItem("movie-name")
     const options = {
-        methods: "POST",
+        method: "GET",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: {
-
-            title: movieName
-        }
     }
     
-    const response = await fetch(`http://localhost:3000/movies/search`, options);
+    const response = await fetch(`http://localhost:3000/movies/search?title=${encodeURIComponent(movieName)}`, options);
   
     if (!response.ok) {
         window.location.assign("../Login/login.html")
@@ -30,7 +26,7 @@ async function getMovieInfo(){
     const data = responseObject.data
     return data
 }
-function getMovieReviews(){
+async function getMovieReviews(){
 
     const response = await fetch(`http://localhost:3000/movies/search`, options);
   
@@ -73,14 +69,24 @@ function generateTableRow(){
     
 }
 
-function displayMovieInfo(){
-    let object = {
-        poster: "source-linkwew",
-        title: "testMovie",
-        actors: "testActor1, testActor2",
-        plot: "asdojdjasndjokas",
-        imdbRating: 5
-    };
+async function displayMovieInfo(){
+    // let object = {
+    //     poster: "source-linkwew",
+    //     title: "testMovie",
+    //     actors: "testActor1, testActor2",
+    //     plot: "asdojdjasndjokas",
+    //     imdbRating: 5
+    // };
+    const movie = await getMovieInfo()
+
+    const object = {
+        poster: movie.poster,
+        title: movie.title,
+        actors: movie.actors,
+        plot: movie.plot,
+        imdbRating: movie.imdbRating
+    }
+
     for(key in object){
         const h2 = document.createElement("h2")
         movieInfo.appendChild(h2)
