@@ -25,8 +25,9 @@ class Movie{
             return new Movie(existing.rows[0]);
         }
 
+        const omdbTitle = title.replace(/\s+/g, '+')
 
-        const url = `https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${OMDB_API_KEY}`;
+        const url = `https://www.omdbapi.com/?t=${omdbTitle}&apikey=${OMDB_API_KEY}`;
         const response = await fetch(url);
         const data = await response.json();
 
@@ -35,8 +36,8 @@ class Movie{
         }
 
         const result = await db.query(
-            `INSERT INTO movies (title, imdbRating, imdbID, movieyear, poster, director, actors)
-             VALUES ($1, $2, $3, $4, $5, $6, $7)
+            `INSERT INTO movies (title, imdbRating, imdbID, movieyear, poster, director, actors, plot)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
              RETURNING *;`,
             [
                 data.Title,
@@ -45,7 +46,8 @@ class Movie{
                 parseInt(data.Year) || null,
                 data.Poster,
                 data.Director,
-                data.Actors
+                data.Actors,
+                data.Plot
             ]
         );
 
