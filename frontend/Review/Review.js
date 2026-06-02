@@ -1,3 +1,5 @@
+const id = localStorage.getItem("userID")
+
 document.getElementById("review-form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -12,7 +14,8 @@ document.getElementById("review-form").addEventListener("submit", async (e) => {
         body: JSON.stringify({
             movieName: form.get("movie-name"),
             movieScore: form.get("movie-score"),
-            comments: form.get("comments")
+            comments: form.get("comments"),
+            userID: id
         })
     }
 
