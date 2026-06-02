@@ -26,6 +26,7 @@ class Review {
   }
 
   static async getByUser(userID) {
+    console.log("review id:", userID)
     const result = await db.query(
         `SELECT r.id, r.user_rating, r.comments, m.title, m.poster, m.imdbRating, m.imdbID
          FROM reviews AS r
@@ -33,6 +34,7 @@ class Review {
          WHERE r.user_id = $1;`,
         [userID]
     );
+    console.log("hi from models")
     return result.rows;
 }
 
