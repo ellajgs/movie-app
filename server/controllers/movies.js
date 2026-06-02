@@ -2,7 +2,7 @@ const Movie = require('../models/Movie')
 
 async function searchMovie(req,res){
     try{
-        const { title } = req.query;
+        const { title } = req.body
         if (!title) return res.status(400).json({ error: 'Title is required' });
 
         const movie = await Movie.findOrAdd(title);
