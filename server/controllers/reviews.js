@@ -11,4 +11,25 @@ async function create (req, res) {
 }
 
 
-module.exports = {create}
+async function show(req, res) {
+    try {
+        const userID = req.user.id;
+        const reviews = await Review.getByUser(userID);
+        res.status(200).json(reviews);
+    } catch(err) {
+        res.status(404).json({ error: err.message });
+    }
+}
+
+
+async function movie(req, res) {
+    try {
+        const { movie_id } = req.params;
+        const reviews = await Review.getByMovie(movie_id);
+        res.status(200).json(reviews);
+    } catch(err) {
+        res.status(404).json({ error: err.message });
+    }
+}
+
+module.exports = { create, show, movie };
