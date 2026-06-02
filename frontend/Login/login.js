@@ -2,7 +2,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const form = new FormData(e.target);
-
+    console.log(form)
     const options = {
         method: "POST",
         headers: {
@@ -15,7 +15,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
         })
     }
 
-    const response = await fetch("http://localhost:3000/login/login", options);
+    const response = await fetch("http://localhost:3000/users/login", options);
     const data = await response.json();
     console.log(data);
 

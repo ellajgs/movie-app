@@ -18,7 +18,7 @@ async function create(req, res) {
     const data = req.body;
 
     const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT_ROUNDS));
-    console.log(process.env.BCRYPT_SALT_ROUNDS)
+    console.log(process.env.BCRYPT_SALT_ROUNDS);
     data["password"] = await bcrypt.hash(data.password, salt);
 
     const result = await User.create(data);
@@ -48,7 +48,7 @@ async function login(req, res) {
 
       const sendToken = (err, token) => {
         if (err) {
-          throw new Error("Error in token generation");
+          return res.status(500).json({ error: "Error in token generation" });
         }
 
         res.status(200).json({
@@ -60,7 +60,6 @@ async function login(req, res) {
           },
         });
       };
-
       jwt.sign(
         payload,
         process.env.SECRET_TOKEN,
