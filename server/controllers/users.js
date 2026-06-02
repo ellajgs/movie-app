@@ -5,8 +5,8 @@ const User = require("../models/User");
 
 async function show(req, res) {
   try {
-    const name = req.params.name;
-    const user = await User.getOneByUsername(name);
+    const username = req.params.username;
+    const user = await User.getOneByUsername(username);
     res.status(200).send({ data: user });
   } catch (err) {
     res.status(404).send({ error: err.message });
@@ -18,10 +18,10 @@ async function create(req, res) {
     const data = req.body;
 
     const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT_ROUNDS));
+    console.log(process.env.BCRYPT_SALT_ROUNDS)
     data["password"] = await bcrypt.hash(data.password, salt);
 
     const result = await User.create(data);
-
     res.status(201).send({ data: result });
   } catch (err) {
     res.status(400).send({ error: err.message });

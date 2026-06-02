@@ -25,16 +25,14 @@ class User {
 
     static async create(data) {
         const { username, password } = data
-
-        if (!username || !password || !name || !form) {
+        if (!username || !password) {
             throw new Error("Missing required fields.")
         }
 
         const response = await db.query("INSERT INTO users (username, password_hash) VALUES ($1, $2) RETURNING *;", [username, password])
-        const newId = response.rows[0].id
-        const newUser = await Login.getOneById(newId)
-
-        return new User(newUser)
+        // const newId = response.rows[0].id
+        // const newUser = await User.getOneById(newId)
+        return new User(response.rows[0])
     }
 }
 
