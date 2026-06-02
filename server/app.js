@@ -6,9 +6,9 @@ app.use(cors());
 app.use(express.json());
 
 
-const loginRouter = require("./routes/loginRouter")
+const loginRouter = require("./routes/users")
 const moviesRouter = require("./routes/movies")
-const reviewRouter = require("./routes/reviewRouter")
+const reviewRouter = require("./routes/reviews")
 
 app.use("/users", loginRouter)
 app.use("/movies", moviesRouter)
