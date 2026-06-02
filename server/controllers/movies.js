@@ -5,7 +5,7 @@ async function searchMovie(req,res){
         const { title } = req.query;
         if (!title) return res.status(400).json({ error: 'Title is required' });
 
-        const movie = await Movie.findByTitle(title);
+        const movie = await Movie.findOrAdd(title);
         res.json(movie);
     } catch (err) {
         res.status(404).json({ error: err.message });
@@ -16,7 +16,6 @@ async function refreshRating(req, res) {
     try {
         const { imdbID } = req.params;
         const movie = await Movie.findByImdbID(imdbID);
-        // Only return what the frontend needs for a refresh
         res.json({ imdbRating: movie.imdbRating, imdbID: movie.imdbID });
     } catch (err) {
         res.status(404).json({ error: err.message });
