@@ -14,7 +14,8 @@ async function create (req, res) {
 async function show(req, res) {
     try {
         const {id} = req.params;
-        const reviews = await Review.getByUser(id);
+        console.log(id)
+        const reviews = await Review.getByUser(parseInt(id));
         res.status(200).json(reviews);
     } catch(err) {
         res.status(404).json({ error: err.message });
