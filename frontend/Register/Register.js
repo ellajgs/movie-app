@@ -11,15 +11,15 @@ document.getElementById("register-form").addEventListener("submit", async (e) =>
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            name: form.get("name"),
-            form: form.get("form"),
+            // name: form.get("name"),
+            // form: form.get("form"),
             username: form.get("username"),
             password: form.get("password")
         })
     } 
     console.log(options)
 
-    const response = await fetch("http://localhost:3000/login/register", options);
+    const response = await fetch("http://localhost:3000/users/register", options);
     const data = await response.json();
 
     if (response.status == 201) {

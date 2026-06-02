@@ -1,12 +1,12 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const Login = require("../models/User");
+const User = require("../models/User");
 
 async function show(req, res) {
   try {
     const name = req.params.name;
-    const user = await Login.getOneByUsername(name);
+    const user = await User.getOneByUsername(name);
     res.status(200).send({ data: user });
   } catch (err) {
     res.status(404).send({ error: err.message });
@@ -20,7 +20,7 @@ async function create(req, res) {
     const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT_ROUNDS));
     data["password"] = await bcrypt.hash(data.password, salt);
 
-    const result = await Login.create(data);
+    const result = await User.create(data);
 
     res.status(201).send({ data: result });
   } catch (err) {
@@ -32,19 +32,18 @@ async function login(req, res) {
   const data = req.body;
 
   try {
-    const user = await Login.getOneByUsername(data.username);
+    const user = await User.getOneByUsername(data.username);
 
     if (!user) {
       throw new Error("No user with this username");
     }
 
-    const match = await bcrypt.compare(data.password, user.password);
+    const match = await bcrypt.compare(data.password, user.password_hash);
 
     if (match) {
       const payload = {
         username: user.username,
-        student_id: user.id,
-        form: user.form,
+        user_id: user.id,
       };
 
       const sendToken = (err, token) => {
@@ -57,9 +56,7 @@ async function login(req, res) {
           token: token,
           user: {
             id: user.id,
-            name: user.name,
             username: user.username,
-            form: user.form,
           },
         });
       };
