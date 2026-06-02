@@ -15,7 +15,7 @@ async function getMovieInfo(){
         }
     }
     
-    const response = await fetch(`http://localhost:3000/search${movieName}`, options);
+    const response = await fetch(`http://localhost:3000/movies/search`, options);
   
     if (!response.ok) {
         window.location.assign("../Login/login.html")
@@ -24,7 +24,17 @@ async function getMovieInfo(){
     const data = responseObject.data
     return data
 }
-function getMovieReviews(){}
+function getMovieReviews(){
+
+    const response = await fetch(`http://localhost:3000/movies/search`, options);
+  
+    if (!response.ok) {
+        window.location.assign("../Login/login.html")
+    }
+    const responseObject = await response.json();
+    const data = responseObject.data
+    return data
+}
 
 
 
@@ -58,30 +68,28 @@ function generateTableRow(){
 }
 
 function displayMovieInfo(){
-    // const img = document.createElement("img");
-    // img.setAttribute("src", "source-link")
-    // movieInfo.appendChild(img)
     let object = {
-        poster: "source-link",
+        poster: "source-linkwew",
         title: "testMovie",
         actors: "testActor1, testActor2",
         plot: "asdojdjasndjokas",
         imdbRating: 5
     };
     for(key in object){
-       const h2 = document.createElement("h2")
-       movieInfo.appendChild(h2)
-       h2.innerHTML = key;
-       if (key != 'poster'){
+        const h2 = document.createElement("h2")
+        movieInfo.appendChild(h2)
+        h2.innerHTML = key;
+        if (key != 'poster'){
             const p = document.createElement("p")
             p.innerHTML = `${object[key]}`
             movieInfo.appendChild(p)
         }
         else{
-
+            const img = document.createElement("img");
+            img.setAttribute("src", object[key])
+            movieInfo.appendChild(img)
         }
     }
-    movieInfo.appendChild(ul)
 }
 
 generateTableRow()
