@@ -21,7 +21,20 @@ class Review:
         conn = get_db()
         cur = conn.cursor()
         cur.execute(
-            """SELECT r.id, r.user_rating, r.comments, m.title, m.poster, m.imdbrating, m.imdbid FROM reviews AS r LEFT JOIN movies AS m ON r.movie_id = m.id WHERE r.user_id =  %s;""",
+            """SELECT r.id,
+            r.user_rating,
+            r.comments,
+            m.title,
+            m.poster,
+            m.imdbrating,
+            m.imdbid,
+            m.id as movie_id,
+            m.director,
+            m.movie_year
+            FROM reviews AS r 
+            LEFT JOIN movies AS m 
+            ON r.movie_id = m.id 
+            WHERE r.user_id =  %s;""",
             (id,)
         )
         rows = cur.fetchall()
@@ -35,16 +48,18 @@ class Review:
             "review_id": data["id"],
             "user_rating": data["user_rating"],
             "comments": data["comments"],
-            "movie_title": data["title"],
+            "title": data["title"],
+            "movie_id": data.get("movie_id"),
             "poster": data["poster"],
             "imdbrating": data["imdbrating"],
-            "imdbid": data["imdbid"]
+            "imdbid": data["imdbid"],
+            "director": data["director"],
+            "year": data["movie_year"]
             
             
         })
 
         return output
-    
 
     @staticmethod
     def get_by_movie(movie_id):
@@ -67,7 +82,8 @@ class Review:
             "username": data["username"],
             "movie_title": data["title"],
             "user_rating": data["user_rating"],
-            "comments": data["comments"]
+            "comments": data["comments"],
+            "movie_id": data.get("movie_id"),
         })
 
         return output
