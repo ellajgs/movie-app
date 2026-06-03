@@ -51,7 +51,8 @@ async def get_movie_reviews():
     return response_object["data"]
 
 # Generate table rows
-def generate_table_rows():
+async def generate_cards():
+    data = await get_movie_reviews()
     data = [
         {"username": "test1", "rating": 3,  "comment": "testcom1"},
         {"username": "test2", "rating": 4,  "comment": "testcom2"},
@@ -125,5 +126,5 @@ async def display_movie_info():
             movie_info.appendChild(img)
 
 # Run
-generate_table_rows()
+generate_cards()
 display_movie_info()
