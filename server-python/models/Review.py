@@ -8,6 +8,7 @@ class Review:
         self.user_rating = data.get('user_rating')
         self.comments = data.get('comments')
         self.username = data.get('username')
+        self.poster = data.get('poster')
     def to_dict(self):
         return {
             'id': self.id,
@@ -15,7 +16,8 @@ class Review:
             'movie_id': self.movie_id,
             'user_rating': self.user_rating,
             'comments': self.comments,
-            'username': self.username
+            'username': self.username,
+            'poster': self.poster,
         }
     
     @staticmethod
@@ -41,10 +43,11 @@ class Review:
         conn = get_db()
         cur = conn.cursor()
         cur.execute(
-            """SELECT r.id, r.user_id, r.movie_id, r.user_rating, r.comments, u.username
-               FROM reviews AS r
-               LEFT JOIN users AS u ON r.user_id = u.id
-               WHERE r.movie_id = %s;""",
+           """SELECT r.id, r.user_id, r.movie_id, r.user_rating, r.comments, u.username, m.poster
+            FROM reviews AS r
+            LEFT JOIN users AS u ON r.user_id = u.id
+            LEFT JOIN movies AS m ON r.movie_id = m.id
+            WHERE r.movie_id = %s;""",
             (movie_id,)
         )
         rows = cur.fetchall()
