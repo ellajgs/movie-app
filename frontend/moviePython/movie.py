@@ -7,7 +7,7 @@ back_button  = document.querySelector("#back-button")
 movie_info   = document.querySelector("#movie-info-container")
 
 # Back button
-def on_back_click(event):
+def on_back_click():
     window.location.assign("../Home/Home.html")
 
 back_button.addEventListener("click", on_back_click)
@@ -15,9 +15,13 @@ back_button.addEventListener("click", on_back_click)
 # Get movie info
 async def get_movie_info():
     movie_name = localStorage.getItem("movie-name")
+    movie_name = "The Dark Knight"
+    encoded = str(encodeURIComponent(movie_name))
+    
+    print(str(encodeURIComponent(movie_name)))
 
-    response = await fetch(
-        f"http://localhost:3001/movies/search?title={encodeURIComponent(movie_name)}",
+    response = await pyfetch(
+        f"http://localhost:3001/movies/search?title={encoded}",
         method="GET",
         headers={
             "Accept": "application/json",
@@ -30,7 +34,7 @@ async def get_movie_info():
         return None
 
     response_object = await response.json()
-    return response_object["data"]
+    return response_object
 
 # Get movie reviews
 async def get_movie_reviews():
@@ -99,17 +103,17 @@ async def generate_cards():
 
 # Display movie info
 async def display_movie_info():
-    # movie = await get_movie_info()
-    # if not movie:
-    #     return
+    movie = await get_movie_info()
+    if not movie:
+        return
 
-    movie = {
-        "poster": "source-link",
-        "title": "testMovie",
-        "actors": "testActor1, testActor2",
-        "plot": "testPlot",
-        "imdbRating": 5
-     }
+    # movie = {
+    #     "poster": "source-link",
+    #     "title": "testMovie",
+    #     "actors": "testActor1, testActor2",
+    #     "plot": "testPlot",
+    #     "imdbRating": 5
+    #  }
 
 
 
@@ -124,9 +128,10 @@ async def display_movie_info():
             movie_info.appendChild(p)
         else:
             img = document.createElement("img")
+            print(value)
             img.setAttribute("src", value)
             movie_info.appendChild(img)
 
 # Run
 await generate_cards()
-display_movie_info()
+await display_movie_info()

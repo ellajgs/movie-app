@@ -5,7 +5,7 @@ const tableBody = document.querySelector("#movie-table-body")
 
 document.getElementById("row-1").addEventListener("click", () => {
     localStorage.setItem("movie-name", "The Dark Knight")
-    window.location.assign("../Movie/Movie.html")
+    window.location.assign("../moviePython/movie.html")
 })
 
 function generateTableRow(){
