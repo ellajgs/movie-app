@@ -17,7 +17,7 @@ async def get_movie_info():
     movie_name = localStorage.getItem("movie-name")
 
     response = await fetch(
-        f"http://localhost:3000/movies/search?title={encodeURIComponent(movie_name)}",
+        f"http://localhost:3001/movies/search?title={encodeURIComponent(movie_name)}",
         method="GET",
         headers={
             "Accept": "application/json",
@@ -34,8 +34,10 @@ async def get_movie_info():
 
 # Get movie reviews
 async def get_movie_reviews():
+    movie_id = localStorage.getItem("movie_id")
+    movie_id = 1
     response = await pyfetch(
-        "http://localhost:3000/movies/search",
+        f"http://localhost:3001/reviews/{movie_id}",
         method="GET",
         headers={
             "Accept": "application/json",
@@ -48,16 +50,16 @@ async def get_movie_reviews():
         return None
 
     response_object = await response.json()
-    return response_object["data"]
+    return response_object
 
-# Generate table rows
+# Generate table cards
 async def generate_cards():
     data = await get_movie_reviews()
-    data = [
-        {"username": "test1", "rating": 3,  "comment": "testcom1"},
-        {"username": "test2", "rating": 4,  "comment": "testcom2"},
-        {"username": "test3", "rating": 90, "comment": "testcom3"},
-    ]
+    # data = [
+    #     {"username": "test1", "rating": 3,  "comment": "testcom1"},
+    #     {"username": "test2", "rating": 4,  "comment": "testcom2"},
+    #     {"username": "test3", "rating": 90, "comment": "testcom3"},
+    # ]
 
     for item in data:
         card = document.createElement("div")
@@ -70,7 +72,7 @@ async def generate_cards():
 
         rating = document.createElement("div")
         rating.setAttribute("class", "col-md-4 text-center p-5")
-        rating.innerHTML = item["rating"]
+        rating.innerHTML = item["user_rating"]
         row.appendChild(rating)
 
         mainBody = document.createElement("div")
@@ -88,7 +90,7 @@ async def generate_cards():
 
         comment = document.createElement("p")
         comment.setAttribute("class", "card-text")
-        comment.innerHTML = item["comment"]
+        comment.innerHTML = item["comments"]
         cardBody.appendChild(comment)
 
         card_container.appendChild(card)
@@ -126,5 +128,5 @@ async def display_movie_info():
             movie_info.appendChild(img)
 
 # Run
-generate_cards()
+await generate_cards()
 display_movie_info()
