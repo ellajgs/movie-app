@@ -7,8 +7,6 @@ class Review:
         self.movie_id = data.get('movie_id')
         self.user_rating = data.get('user_rating')
         self.comments = data.get('comments')
-        self.username = data.get('username')
-        self.poster = data.get('poster')
     def to_dict(self):
         return {
             'id': self.id,
@@ -16,8 +14,6 @@ class Review:
             'movie_id': self.movie_id,
             'user_rating': self.user_rating,
             'comments': self.comments,
-            'username': self.username,
-            'poster': self.poster,
         }
     
     @staticmethod
@@ -43,18 +39,26 @@ class Review:
         conn = get_db()
         cur = conn.cursor()
         cur.execute(
-           """SELECT r.id, r.user_id, r.movie_id, r.user_rating, r.comments, u.username, m.poster
-            FROM reviews AS r
-            LEFT JOIN users AS u ON r.user_id = u.id
-            LEFT JOIN movies AS m ON r.movie_id = m.id
-            WHERE r.movie_id = %s;""",
+           """SELECT r.id, r.user_rating, r.comments, r.user_id, m.title, a.username FROM reviews AS r LEFT JOIN movies AS m ON r.movie_id = m.id LEFT JOIN users AS a on r.user_id = a.id WHERE r.movie_id = %s;""",
             (movie_id,)
         )
         rows = cur.fetchall()
         columns = [desc[0] for desc in cur.description]
         cur.close()
         conn.close()
-        return [Review(dict(zip(columns, row))).to_dict() for row in rows]
+        output = []
+        for row in rows:
+            data = dict(zip(columns, row))
+            output.append({
+            "review_id": data["id"],
+            "user_id": data["user_id"],
+            "username": data["username"],
+            "movie_title": data["title"],
+            "user_rating": data["user_rating"],
+            "comments": data["comments"]
+        })
+
+        return output
 
     @staticmethod
     def create(data):
