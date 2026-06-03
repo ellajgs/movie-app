@@ -1,4 +1,5 @@
 from pyodide.http import pyfetch
+from pyodide.ffi  import create_proxy
 from js import localStorage, window, document, encodeURIComponent, fetch
 
 movie_header = document.querySelector("#movie-header")
@@ -7,15 +8,14 @@ back_button  = document.querySelector("#back-button")
 movie_info   = document.querySelector("#movie-info-container")
 
 # Back button
-def on_back_click():
+def on_back_click(event):
     window.location.assign("../Home/Home.html")
 
-back_button.addEventListener("click", on_back_click)
+back_button.addEventListener("click", create_proxy(on_back_click))
 
 # Get movie info
 async def get_movie_info():
-    movie_name = localStorage.getItem("movie-name")
-    movie_name = "The Dark Knight"
+    movie_name = localStorage.getItem("movie_name")
     encoded = str(encodeURIComponent(movie_name))
     
     print(str(encodeURIComponent(movie_name)))

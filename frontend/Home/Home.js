@@ -4,7 +4,7 @@
 // const switchLanguage = document.querySelectorAll(".dropdown-item").forEach(item => {})
 
 const movies = [{
-    title: "test",
+    title: "The Dark Knight",
     rating: 5,
     img: "",
     director: "director",
@@ -18,7 +18,7 @@ const createMovieCard = (movie) => {
   col.className = 'col';
 
   let link = document.createElement('a');
-  link.href = '/frontend/Movie/Movie.html';
+  link.href = '/frontend/moviePython/movie.html';
   link.className = 'text-decoration-none';
 
   let card = document.createElement('div');
@@ -60,6 +60,9 @@ const createMovieCard = (movie) => {
   link.appendChild(card);
   col.appendChild(link);
   movieGrid.appendChild(col);
+  card.addEventListener("click", () => {
+    localStorage.setItem("movie_name", movie.title)
+  })
 };
 
 const renderMovieCards = () => {
