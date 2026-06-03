@@ -13,6 +13,15 @@ def get_user_from_token(request):
     decoded = jwt.decode(token, os.getenv('SECRET_TOKEN'), algorithms=['HS256'])
     return decoded 
 
+# GET /reviews/all/<id> — all reviews for a user
+@reviews_bp.route('/all/<int:id>', methods=['GET'])
+def get_user_reviews(id):
+    try:
+        reviews = Review.get_by_user(id)
+        return jsonify(reviews), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 404
+
 # GET /reviews/<movie_id> — all reviews for a movie
 @reviews_bp.route('/<int:movie_id>', methods=['GET'])
 def get_reviews(movie_id):
