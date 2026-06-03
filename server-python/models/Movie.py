@@ -8,8 +8,8 @@ class Movie:
     def __init__(self, data):
         self.id = data.get('id')
         self.title = data.get('title')
-        self.imdb_rating = data.get('imdb_rating')
-        self.imdb_id = data.get('imdb_id')
+        self.imdbrating = data.get('imdbrating')
+        self.imdbid = data.get('imdbid')
         self.movie_year = data.get('movie_year')
         self.poster = data.get('poster')
         self.actors = data.get('actors')
@@ -20,8 +20,8 @@ class Movie:
         return {
             'id': self.id,
             'title': self.title,
-            'imdb_rating': self.imdb_rating,
-            'imdb_id': self.imdb_id,
+            'imdbrating': self.imdbrating,
+            'imdbid': self.imdbid,
             'movie_year': self.movie_year,
             'poster': self.poster,
             'actors': self.actors,
@@ -51,7 +51,7 @@ class Movie:
             #raise Exception is like throw new Error
 
         cur.execute(
-            """INSERT INTO movies (title, imdb_rating, imdb_id, movie_year, poster, director, actors, plot)
+            """INSERT INTO movies (title, imdbrating, imdbid, movie_year, poster, director, actors, plot)
                VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING *;""",
             (
                 data['Title'],
@@ -72,10 +72,10 @@ class Movie:
         return Movie(dict(zip(columns, row))) # this whole bit is turning what we got back from the db rows into an object with key value pairs
 
     @staticmethod
-    def get_by_imdb_id(imdb_id):
+    def get_by_imdb_id(imdbid):
         conn = get_db()
         cur = conn.cursor()
-        cur.execute("SELECT * FROM movies WHERE imdb_id = %s;", (imdb_id,))
+        cur.execute("SELECT * FROM movies WHERE imdbid = %s;", (imdbid,))
         row = cur.fetchone()
         columns = [desc[0] for desc in cur.description]
         cur.close()
