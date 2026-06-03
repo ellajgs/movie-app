@@ -21,17 +21,29 @@ class Review:
         conn = get_db()
         cur = conn.cursor()
         cur.execute(
-            """SELECT r.id, r.user_rating, r.comments, m.title, m.poster, m.imdbRating, m.imdbID
-         FROM reviews AS r
-         LEFT JOIN movies AS m ON r.movie_id = m.id
-         WHERE r.user_id = %s;""",
+            """SELECT r.id, r.user_rating, r.comments, m.title, m.poster, m.imdbrating, m.imdbid FROM reviews AS r LEFT JOIN movies AS m ON r.movie_id = m.id WHERE r.user_id =  %s;""",
             (id,)
         )
         rows = cur.fetchall()
         columns = [desc[0] for desc in cur.description]
         cur.close()
         conn.close()
-        return [Review(dict(zip(columns, row))).to_dict() for row in rows]
+        output = []
+        for row in rows:
+            data = dict(zip(columns, row))
+            output.append({
+            "review_id": data["id"],
+            "user_rating": data["user_rating"],
+            "comments": data["comments"],
+            "movie_title": data["title"],
+            "poster": data["poster"],
+            "imdbrating": data["imdbrating"],
+            "imdbid": data["imdbid"]
+            
+            
+        })
+
+        return output
     
 
     @staticmethod
