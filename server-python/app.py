@@ -14,4 +14,4 @@ app.register_blueprint(movies_bp, url_prefix='/movies')
 app.register_blueprint(reviews_bp, url_prefix='/reviews')
 
 if __name__ == '__main__':
-    app.run(debug=True, port=3000)
+    app.run(debug=True, port=3001)
