@@ -29,13 +29,13 @@ class Movie:
             'plot': self.plot
         }
 
-    @staticmethod
+    @staticmethod #like static async in js
     def find_or_add(title):
         conn = get_db()
-        cur = conn.cursor()
+        cur = conn.cursor() # these two lines are like db.query
 
         cur.execute("SELECT * FROM movies WHERE LOWER(title) = LOWER(%s);", (title,))
-        row = cur.fetchone()
+        row = cur.fetchone() #gets one row from sql query
         columns = [desc[0] for desc in cur.description]
 
         if row:
@@ -43,11 +43,12 @@ class Movie:
             conn.close()
             return Movie(dict(zip(columns, row)))
 
-        response = requests.get(f"https://www.omdbapi.com/?t={title}&apikey={OMDB_API_KEY}")
+        response = requests.get(f"https://www.omdbapi.com/?t={title}&apikey={OMDB_API_KEY}") # f is like template literals in js
         data = response.json()
 
         if data.get('Response') == 'False':
             raise Exception(data.get('Error', 'Movie not found'))
+            #raise Exception is like throw new Error
 
         cur.execute(
             """INSERT INTO movies (title, imdb_rating, imdb_id, movie_year, poster, director, actors, plot)
@@ -65,10 +66,10 @@ class Movie:
         )
         row = cur.fetchone()
         columns = [desc[0] for desc in cur.description]
-        conn.commit()
-        cur.close()
+        conn.commit() # saves changes to database
+        cur.close() # ends connection with database
         conn.close()
-        return Movie(dict(zip(columns, row)))
+        return Movie(dict(zip(columns, row))) # this whole bit is turning what we got back from the db rows into an object with key value pairs
 
     @staticmethod
     def get_by_imdb_id(imdb_id):
