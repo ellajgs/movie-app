@@ -25,7 +25,7 @@ class Review:
         conn = get_db()
         cur = conn.cursor()
         cur.execute(
-            """SELECT r.id, r.user_rating, r.comments, m.title, m.poster, m.imdbRating, m.imdbID
+            """SELECT r.id, r.user_rating, r.comments, m.title, m.poster, m.imdbrating, m.imdbid
          FROM reviews AS r
          LEFT JOIN movies AS m ON r.movie_id = m.id
          WHERE r.user_id = %s;""",
