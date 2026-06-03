@@ -18,15 +18,13 @@ class Movie:
 
     def to_dict(self):
         return {
-            'id': self.id,
-            'title': self.title,
-            'imdbrating': self.imdbrating,
-            'imdbid': self.imdbid,
-            'movie_year': self.movie_year,
             'poster': self.poster,
-            'actors': self.actors,
+            'title': self.title,
+            'plot': self.plot,
+            'movie_year': self.movie_year,
+            'imdbrating': self.imdbrating,
             'director': self.director,
-            'plot': self.plot
+            'actors': self.actors,
         }
 
     @staticmethod #like static async in js
