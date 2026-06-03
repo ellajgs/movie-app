@@ -2,7 +2,7 @@ from pyodide.http import pyfetch
 from js import localStorage, window, document, encodeURIComponent, fetch
 
 movie_header = document.querySelector("#movie-header")
-table_body   = document.querySelector("#movie-table-body")
+card_container = document.querySelector("#card-container")
 back_button  = document.querySelector("#back-button")
 movie_info   = document.querySelector("#movie-info-container")
 
@@ -55,16 +55,44 @@ def generate_table_rows():
     data = [
         {"username": "test1", "rating": 3,  "comment": "testcom1"},
         {"username": "test2", "rating": 4,  "comment": "testcom2"},
-        {"username": "test3", "rating": 90, "comment": "testcomdfdfdf2"},
+        {"username": "test3", "rating": 90, "comment": "testcom3"},
     ]
 
     for item in data:
-        tr = document.createElement("tr")
-        for value in item.values():
-            td = document.createElement("td")
-            td.innerHTML = str(value)
-            tr.appendChild(td)
-        table_body.appendChild(tr)
+        card = document.createElement("div")
+        card.setAttribute("class", "card mb-3")
+        card.setAttribute("style","max-width: 540px;")
+
+        row = document.createElement("div")
+        row.setAttribute("class", "row g-0")
+        card.appendChild(row)
+
+        rating = document.createElement("div")
+        rating.setAttribute("class", "col-md-4 text-center p-5")
+        rating.innerHTML = item["rating"]
+        row.appendChild(rating)
+
+        mainBody = document.createElement("div")
+        mainBody.setAttribute("class", "col-md-8")
+        row.appendChild(mainBody)
+
+        cardBody = document.createElement("div")
+        cardBody.setAttribute("class", "card-body")
+        mainBody.appendChild(cardBody)
+
+        username = document.createElement("h5")
+        username.setAttribute("class", "card-title")
+        username.innerHTML = item["username"]
+        cardBody.appendChild(username)
+
+        comment = document.createElement("p")
+        comment.setAttribute("class", "card-text")
+        comment.innerHTML = item["comment"]
+        cardBody.appendChild(comment)
+
+        card_container.appendChild(card)
+
+
 
 # Display movie info
 async def display_movie_info():
