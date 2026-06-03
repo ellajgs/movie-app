@@ -17,6 +17,24 @@ class Review:
             'comments': self.comments,
             'username': self.username
         }
+    
+    @staticmethod
+    def get_by_user(id):
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute(
+            """SELECT r.id, r.user_rating, r.comments, m.title, m.poster, m.imdbRating, m.imdbID
+         FROM reviews AS r
+         LEFT JOIN movies AS m ON r.movie_id = m.id
+         WHERE r.user_id = %s;""",
+            (id,)
+        )
+        rows = cur.fetchall()
+        columns = [desc[0] for desc in cur.description]
+        cur.close()
+        conn.close()
+        return [Review(dict(zip(columns, row))).to_dict() for row in rows]
+    
 
     @staticmethod
     def get_by_movie(movie_id):
