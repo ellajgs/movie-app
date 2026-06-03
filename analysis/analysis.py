@@ -106,3 +106,24 @@ duration_avg_rating =(
 )
 
 st.scatter_chart(duration_avg_rating, x="duration",y="avg_score")
+
+st.subheader("Correlation of ratings to budget")
+
+order = ["Low","Medium","High"]
+ratings_budget = (
+    unique_movies.groupby("budget_band")
+    .agg(
+        avg_score =("user_rating", "mean")
+    )
+    .reset_index()
+)
+st.bar_chart(ratings_budget,x="budget_band",y="avg_score")
+
+st.subheader("Correlation of ratings for each director")
+
+director_ratings = (
+    data.groupby("director")
+    .agg(avg_rating=("user_rating","mean"))
+    .reset_index()
+)
+st.bar_chart(director_ratings,x="director",y="avg_rating")
