@@ -23,6 +23,7 @@ CREATE TABLE movies (
     plot VARCHAR,
     PRIMARY KEY (id)
 );
+
 --Reviews
 CREATE TABLE reviews (
     id INT GENERATED ALWAYS AS IDENTITY,
