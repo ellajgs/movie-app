@@ -70,7 +70,7 @@ refreshDropdowns()
 const yearList = document.getElementById("movie-year")
 
 function loadyear() {
-    for(let i=1900; i<2026; i++) {
+    for(let i=2026; i>1900; i--) {
         const optionName = document.createElement("option")
         optionName.textContent = i
         optionName.value = i
