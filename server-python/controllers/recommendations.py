@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from models.Review import Review
+from models.Movie import Movie
 import google.generativeai as genai
 import os
 import json
@@ -50,14 +51,21 @@ def get_recommendations():
             )
             omdb_data=omdb_response.json()
             
+            try:
+                movie = Movie.find_or_add(rec['title'])
+                movie_id = movie.id
+            except:
+                movie_id = None
+
             enriched.append({
-                'title': rec['title'],
-                'year': rec['year'],
-                'reason': rec['reason'],
-                'poster': omdb_data.get('Poster', ''),
-                'imdbRating': omdb_data.get('imdbRating', 'N/A'),
-                'actors': omdb_data.get('Actors', 'N/A'),
-                'director': omdb_data.get('Director', 'N/A')
+            'movie_id': movie_id,
+            'title': rec['title'],
+            'year': rec['year'],
+            'reason': rec['reason'],
+            'poster': omdb_data.get('Poster', ''),
+            'imdbrating': omdb_data.get('imdbRating', 'N/A'),
+            'actors': omdb_data.get('Actors', 'N/A'),
+            'director': omdb_data.get('Director', 'N/A')
             })
             
         return jsonify({'recommendations': enriched}), 200

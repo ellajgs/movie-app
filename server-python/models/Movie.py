@@ -32,10 +32,9 @@ class Movie:
             'director': self.director,
             'actors': self.actors,
         }
-    
+
     @staticmethod
     def get_average_rating(id):
-        print("hit model")
         conn = get_db()
         cur = conn.cursor()
         cur.execute("SELECT avg(user_rating) AS avg_rating FROM reviews WHERE movie_id = %s;", (id,))
@@ -47,45 +46,67 @@ class Movie:
             raise Exception("Movie not found")
         return dict(zip(columns, row))
 
-    @staticmethod #like static async in js
+    @staticmethod
     def find_or_add(title):
         conn = get_db()
-        cur = conn.cursor() # these two lines are like db.query
+        cur = conn.cursor()
 
         cur.execute("SELECT * FROM movies WHERE LOWER(title) = LOWER(%s);", (title,))
-        row = cur.fetchone() #gets one row from sql query
+        row = cur.fetchone()
         columns = [desc[0] for desc in cur.description]
 
         if row:
             movie_data = dict(zip(columns, row))
+
+            if movie_data.get('rtrating') is None or movie_data.get('mcrating') is None:
+                omdb_response = requests.get(f"https://www.omdbapi.com/?t={title}&apikey={OMDB_API_KEY}")
+                omdb_data = omdb_response.json()
+
+                rt_rating = None
+                mc_rating = None
+                if omdb_data.get('Ratings'):
+                    for item in omdb_data['Ratings']:
+                        if item['Source'] == 'Rotten Tomatoes':
+                            rt_rating = item['Value']
+                        elif item['Source'] == 'Metacritic':
+                            mc_rating = item['Value']  # ← was unindented
+
+                cur.execute(
+                    """UPDATE movies SET rtrating = %s, mcrating = %s
+                       WHERE id = %s RETURNING *;""",
+                    (
+                        float(rt_rating.replace('%', '')) if rt_rating else None,
+                        float(mc_rating.split('/')[0]) if mc_rating else None,
+                        movie_data['id']
+                    )
+                )
+                row = cur.fetchone()  # ← was outside the if block
+                columns = [desc[0] for desc in cur.description]  # ← same
+                conn.commit()  # ← same
+                movie_data = dict(zip(columns, row))  # ← same
+
             movie_id = movie_data["id"]
             rating_data = Movie.get_average_rating(movie_id)
             movie_data["avg_rating"] = rating_data["avg_rating"]
-
             cur.close()
             conn.close()
-            return Movie(movie_data)
-        
-        
+            return Movie(movie_data)  # ← return was missing from if block
 
-        response = requests.get(f"https://www.omdbapi.com/?t={title}&apikey={OMDB_API_KEY}") # f is like template literals in js
+        # new movie - fetch from OMDB
+        response = requests.get(f"https://www.omdbapi.com/?t={title}&apikey={OMDB_API_KEY}")
         data = response.json()
 
         if data.get('Response') == 'False':
             raise Exception(data.get('Error', 'Movie not found'))
-            #raise Exception is like throw new Error
 
-        #retrieve the ratings fro rotten tomatos and metcritic
         rt_rating = None
         mc_rating = None
-
-        for item in data["Ratings"]:
-            if item["Source"] == "Rotten Tomatoes":
-                rt_rating = item["Value"]
-            elif item["Source"] == "Metacritic":
-                mc_rating = item["Value"]
-        
-        
+        if data.get('Ratings'):
+            for item in data["Ratings"]:
+                if item["Source"] == "Rotten Tomatoes":
+                    rt_rating = item["Value"]
+                elif item["Source"] == "Metacritic":
+                    mc_rating = item["Value"]
 
         cur.execute(
             """INSERT INTO movies (title, imdbrating, rtrating, mcrating, imdbid, movie_year, poster, director, actors, plot)
@@ -105,7 +126,7 @@ class Movie:
         )
         row = cur.fetchone()
         columns = [desc[0] for desc in cur.description]
-        conn.commit() # saves changes to database
-        cur.close() # ends connection with database
+        conn.commit()
+        cur.close()
         conn.close()
-        return Movie(dict(zip(columns, row))) # this whole bit is turning what we got back from the db rows into an object with key value pairs
+        return Movie(dict(zip(columns, row)))
