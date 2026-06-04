@@ -62,7 +62,7 @@ class Movie:
             conn.close()
             return Movie(movie_data)
 
-        year_query = f'y&{year}' if year else ''
+        year_query = f'y={year}' if year else ''
 
         response = requests.get(f"https://www.omdbapi.com/?t={title}{year_query}&apikey={OMDB_API_KEY}") # f is like template literals in js
         data = response.json()
