@@ -11,6 +11,7 @@ class Movie:
         self.imdbrating = data.get('imdbrating')
         self.rtrating = data.get('rtrating')
         self.mcrating = data.get('mcrating')
+        self.combined_rating = data.get('combined_rating')
         self.avg_rating = data.get('avg_rating')
         self.imdbid = data.get('imdbid')
         self.movie_year = data.get('movie_year')
@@ -25,9 +26,7 @@ class Movie:
             'title': self.title,
             'plot': self.plot,
             'movie_year': self.movie_year,
-            'imdbrating': self.imdbrating,
-            'rtrating': self.rtrating,
-            'mcrating': self.mcrating,
+            'combined_rating': self.combined_rating,
             'avg_rating': self.avg_rating,
             'director': self.director,
             'actors': self.actors,
@@ -38,6 +37,18 @@ class Movie:
         conn = get_db()
         cur = conn.cursor()
         cur.execute("SELECT avg(user_rating) AS avg_rating FROM reviews WHERE movie_id = %s;", (id,))
+        row = cur.fetchone()
+        columns = [desc[0] for desc in cur.description]
+        cur.close()
+        conn.close()
+        if not row:
+            raise Exception("Movie not found")
+        return dict(zip(columns, row))
+    
+    def get_combined_rating(id):
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute("SELECT sum(imdbrating + rtrating + mcrating)/3 AS combined_rating FROM movies WHERE id = %s;", (id,))
         row = cur.fetchone()
         columns = [desc[0] for desc in cur.description]
         cur.close()
@@ -75,8 +86,8 @@ class Movie:
                     """UPDATE movies SET rtrating = %s, mcrating = %s
                        WHERE id = %s RETURNING *;""",
                     (
-                        float(rt_rating.replace('%', '')) if rt_rating else None,
-                        float(mc_rating.split('/')[0]) if mc_rating else None,
+                        float(rt_rating.replace('%', ''))/10 if rt_rating else None,
+                        float(mc_rating.split('/')[0])/10 if mc_rating else None,
                         movie_data['id']
                     )
                 )
@@ -86,8 +97,12 @@ class Movie:
                 movie_data = dict(zip(columns, row))  # ← same
 
             movie_id = movie_data["id"]
-            rating_data = Movie.get_average_rating(movie_id)
-            movie_data["avg_rating"] = rating_data["avg_rating"]
+            avg_site_rating = Movie.get_average_rating(movie_id)
+            avg_combined_rating = Movie.get_combined_rating(movie_id)
+            movie_data["avg_rating"] = avg_site_rating["avg_rating"]
+            movie_data["combined_rating"] = round(
+                avg_combined_rating["combined_rating"], 1
+            )
             cur.close()
             conn.close()
             return Movie(movie_data)  # ← return was missing from if block
@@ -115,8 +130,8 @@ class Movie:
             (
                 data['Title'],
                 float(data['imdbRating']) if data['imdbRating'] != 'N/A' else None,
-                float(rt_rating.replace('%', '')) if rt_rating else None,
-                float(mc_rating.split('/')[0]) if mc_rating else None,
+                float(rt_rating.replace('%', ''))/10 if rt_rating else None,
+                float(mc_rating.split('/')[0])/10 if mc_rating else None,
                 data['imdbID'],
                 int(data['Year'][:4]) if data['Year'] else None,
                 data['Poster'],
