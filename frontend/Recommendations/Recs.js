@@ -1,15 +1,25 @@
 const userName = localStorage.getItem("username")
-document.getElementById("welcome-text").innerHTML = "Welcome, " + userName + "!"
+document.getElementById("username").textContent = userName
 
 // const switchLanguage = document.querySelectorAll(".dropdown-item").forEach(item => {})
 
-const movies = [{
-    title: "test",
-    rating: 5,
-    img: "",
-    director: "director",
-    year: "2026"
-}]
+const recommendations = async () => {
+    const response = await fetch("http://localhost:3001/recs",{
+        method: "GET",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        }
+    })
+
+    if (!response.ok) {
+        window.location.assign("../Login/Login.html")
+        return null
+    }
+
+    const data = await response.json()
+    return data
+}
 
 let movieGrid;
 
@@ -37,10 +47,6 @@ const createMovieCard = (movie) => {
   title.className = 'mb-0 fw-medium text-dark';
   title.innerText = movie.title;
 
-  let rating = document.createElement('span');
-  rating.className = 'badge rounded-pill bg-success-subtle text-success flex-shrink-0';
-  rating.innerText = movie.rating;
-
   let director = document.createElement('p');
   director.className = 'mb-0 p-2 text-muted';
   director.style.cssText = 'font-size: 15px; text-align: left;';
@@ -52,7 +58,6 @@ const createMovieCard = (movie) => {
   year.innerText = movie.year;
 
   cardBody.appendChild(title);
-  cardBody.appendChild(rating);
   card.appendChild(img);
   card.appendChild(cardBody);
   card.appendChild(director);
@@ -63,10 +68,9 @@ const createMovieCard = (movie) => {
 };
 
 const renderMovieCards = () => {
-  if (movieGrid) {
-    document.getElementById('movies-grid').replaceWith(movieGrid);
-    return;
-  }
+  const movies = await recommendations()
+  if (!movies) return
+
   movieGrid = document.getElementById('movies-grid');
   movies.forEach((movie) => {
     createMovieCard(movie);
@@ -76,8 +80,9 @@ const renderMovieCards = () => {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    userName
+    // userName
     renderMovieCards()
+
     document.getElementById("logout-nav").addEventListener("click", (e) => {
     e.preventDefault()
     localStorage.removeItem("user")
