@@ -8,6 +8,8 @@ const token = localStorage.getItem("token")
 
 backButton.addEventListener("click", () => {
     window.location.assign("../Home/Home.html")
+    localStorage.removeItem("movie-name")
+    localStorage.removeItem("movie_id")
 })
 
 async function getMovieInfo(){

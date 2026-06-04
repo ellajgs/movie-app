@@ -16,6 +16,7 @@ const createMovieCard = (movie) => {
     link.addEventListener('click', () => {
         localStorage.setItem("movie-name", movie.title); 
         localStorage.setItem("movie_id", movie.movie_id);
+        localStorage.setItem("imdbid", movie.imdbid )
     });
 
     let card = document.createElement('div');
