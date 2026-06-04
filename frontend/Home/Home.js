@@ -133,4 +133,4 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
     // userName
     loadUserMovies()
-})
+})})
