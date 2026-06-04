@@ -121,8 +121,8 @@ async function displayMovieInfo(){
         <p><strong>Year:</strong> ${movie["movie_year"]}</p>
         <p><strong>Plot:</strong> ${movie["plot"] === null ? "N/A" : movie["plot"]}</p>
         <p><strong>IMDB Rating:</strong> ${movie["imdbrating"]}/10</p>
-        <p><strong>Rotten Tomatoes:</strong> ${movie["rtrating"]}/100</p>
-        <p><strong>Metacritic:</strong> ${movie["mcrating"]}/100</p>
+        <p><strong>Rotten Tomatoes:</strong> ${movie["rtrating"]}/10</p>
+        <p><strong>Metacritic:</strong> ${movie["mcrating"]}/10</p>
         <p><strong>Avg Site Rating:</strong> ${movie["avg_rating"]}/5</p>
 
     `
