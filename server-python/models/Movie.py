@@ -93,6 +93,7 @@ class Movie:
             return Movie(movie_data)  # ← return was missing from if block
 
         year_query = f'&y={year}' if year else ''
+        year_query = f'&y={year}' if year else ''
 
         response = requests.get(f"https://www.omdbapi.com/?t={title}{year_query}&apikey={OMDB_API_KEY}") # f is like template literals in js
         data = response.json()
@@ -138,7 +139,7 @@ class Movie:
         print("hit model")
         conn = get_db()
         cur = conn.cursor()
-        cur.execute("SELECT title FROM movies;")
+        cur.execute("SELECT title,movie_year FROM movies;")
         rows = cur.fetchall()
         columns = [desc[0] for desc in cur.description]
         cur.close()

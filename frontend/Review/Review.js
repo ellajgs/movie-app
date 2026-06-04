@@ -24,7 +24,7 @@ document.getElementById("review-form").addEventListener("submit", async (e) => {
         })
     }
 
-    const response = await fetch("http://localhost:3000/reviews/create", options);
+    const response = await fetch("http://localhost:3001/reviews/create", options);
     console.log("status:", response.status)
     const data = await response.json();
     console.log(data);
@@ -49,27 +49,15 @@ const testData = [
 
 async function refreshDropdowns() {
     console.log("Refresh Triggered");
-    const nameArr = []
-    // const response = await fetch(`https://localhost:3001/movies/all`)
-    // const data = response.json()
-    const data = testData.json()
-    .then((data)=>{
-    for(let i=0; i<data.length; i++) {
-        nameArr.push(data[i].name)
-    }
-    console.log(nameArr);
-    return nameArr
-    })
-    
-    .then((nameArr) =>{
-    for(let i=0; i<nameArr.length; i++) {
-        const optionName = document.createElement("option")
-        optionName.textContent = nameArr[i]
-        optionName.value = nameArr[i]
-        movieList.appendChild(optionName)
-    }
-    })
-
+    const response = await fetch(`http://localhost:3001/movies/all`)
+    const data = await response.json()
+//   const data = await Promise.resolve(testData);
+ console.log(data);
+  data.forEach(movie => {
+    const option = document.createElement("option");
+    option.value = movie.title +'   -   ('+ movie.movie_year + ')';
+    movieList.appendChild(option);
+  });
 }
 
 refreshDropdowns()
