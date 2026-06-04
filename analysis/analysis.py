@@ -33,7 +33,7 @@ unique_movies = data.drop_duplicates(subset='movie_name')
 
 unique_movies_name =unique_movies["movie_name"].sort_values(ascending=True).reset_index()
 st.write(unique_movies_name["movie_name"])
-st.write("We can see here that there are 50 movies within our database, all listed below")
+st.write("We can see here that there are 51 movies within our database, all listed below")
 
 genre_counts = (
     unique_movies.groupby('genre')['user_id']
