@@ -30,6 +30,17 @@ def refresh_rating(movie_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 404
     
+
+# GET /movies/combined/<imdb_id>
+@movies_bp.route('/combined/<movie_id>', methods=['GET'])
+def combined_rating(movie_id):
+    try:
+        movie = Movie.get_combined_rating(movie_id)
+        print("hit route")
+        return jsonify(movie), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 404
+    
     #extra note - flask does async/await by default so no need to add
 
 @movies_bp.route('/all', methods=['GET'])
