@@ -19,11 +19,12 @@ def search_movie():
         return jsonify({'error': str(e)}), 404
 
 # GET /movies/refresh/<imdb_id>
-@movies_bp.route('/refresh/<imdbid>', methods=['GET'])
-def refresh_rating(imdbid):
+@movies_bp.route('/refresh/<movie_id>', methods=['GET'])
+def refresh_rating(movie_id):
     try:
-        movie = Movie.get_by_imdb_id(imdbid)
-        return jsonify({'imdbrating': movie.imdbrating, 'imdbid': movie.imdbid}), 200
+        movie = Movie.get_average_rating(movie_id)
+        print("hit route")
+        return jsonify(movie), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 404
     
