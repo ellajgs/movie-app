@@ -2,6 +2,9 @@ const movieHeader = document.querySelector("#movie-header")
 const tableBody = document.querySelector("#movie-table-body")
 const backButton = document.querySelector("#back-button")
 const movieInfo = document.querySelector("#movie-info-container")
+const cardContainer = document.querySelector("#card-container")
+const token = localStorage.getItem("token")
+
 
 backButton.addEventListener("click", () => {
     window.location.assign("../Home/Home.html")
@@ -13,58 +16,86 @@ async function getMovieInfo(){
         method: "GET",
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
     }
     
-    const response = await fetch(`http://localhost:3000/movies/search?title=${encodeURIComponent(movieName)}`, options);
+    const response = await fetch(`http://localhost:3001/movies/search?title=${encodeURIComponent(movieName)}`, options);
   
     if (!response.ok) {
         window.location.assign("../Login/login.html")
     }
     const responseObject = await response.json();
-    const data = responseObject.data
+    const data = responseObject
     return data
 }
 async function getMovieReviews(){
+    movie_id = localStorage.getItem("movie_id")
 
-    const response = await fetch(`http://localhost:3000/movies/search`, options);
+    const options = {
+        method: "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    }
+
+    const response = await fetch(`http://localhost:3001/reviews/${movie_id}`, options);
   
     if (!response.ok) {
         window.location.assign("../Login/login.html")
     }
     const responseObject = await response.json();
-    const data = responseObject.data
+    const data = responseObject
     return data
 }
 
 
 
-function generateTableRow(){
+async function generateCards(){
+    data = await getMovieReviews()
+    commentTitle = document.createElement("h2")
+    commentTitle.innerHTML = 'Comments:'
+    cardContainer.appendChild(commentTitle)
     
-        const data = [{
-            username: "test1",
-            rating: 3,
-            comment: " testcom1"},
-            
-            {username: "test2",
-            rating: 4,
-            comment: "testcom2"},
-            {username: "test3",
-            rating: 90,
-            comment: "testcomdfdfdf2"}
-        ]
         
-   
-     for(let i = 0; i < data.length; i++){
-        const tr = document.createElement("tr");
-        const dataObject = data[i]
-        for(let key in dataObject){
-            const td = document.createElement("td");
-            td.innerHTML = dataObject[key]
-            tr.appendChild(td)
-        }
-        tableBody.appendChild(tr)
+    for (let i = 0; i < data.length; i++){
+            let reviewObject = data[i]
+
+            card = document.createElement("div")
+            card.setAttribute("class", "card mb-3 ")
+
+            row = document.createElement("div")
+            row.setAttribute("class", "row g-0 ")
+            card.appendChild(row)
+
+            rating = document.createElement("div")
+            rating.setAttribute("class", "col-md-4 text-center p-5")
+            rating.innerHTML = reviewObject["user_rating"]
+            row.appendChild(rating)
+
+            mainBody = document.createElement("div")
+            mainBody.setAttribute("class", "col-md-8")
+            row.appendChild(mainBody)
+
+            cardBody = document.createElement("div")
+            cardBody.setAttribute("class", "card-body ")
+            mainBody.appendChild(cardBody)
+
+            username = document.createElement("h5")
+            username.setAttribute("class", "card-title")
+            username.innerHTML = `${reviewObject["username"]}`
+            cardBody.appendChild(username)
+
+            comment = document.createElement("p")
+            comment.setAttribute("class", "card-text")
+            comment.innerHTML = `${reviewObject["comments"]}`
+            cardBody.appendChild(comment)
+
+            cardContainer.appendChild(card)
+
     }
     
 }
@@ -78,31 +109,34 @@ async function displayMovieInfo(){
     //     imdbRating: 5
     // };
     const movie = await getMovieInfo()
+    
+    document.querySelector("#movie-title").innerHTML = movie["title"]
 
-    const object = {
-        poster: movie.poster,
-        title: movie.title,
-        actors: movie.actors,
-        plot: movie.plot,
-        imdbRating: movie.imdbRating
-    }
+    movieInfo.innerHTML = `
+        <img src=${movie["poster"]} class="img-fluid rounded mb-3" alt="Movie poster">
+        <p><strong>Director:</strong> ${movie["director"]}</p>
+        <p><strong>Actors:</strong> ${movie["actors"]}</p>
+        <p><strong>Year:</strong> ${movie["movie_year"]}</p>
+        <p><strong>Plot:</strong> ${movie["plot"] === null ? "N/A" : movie["plot"]}</p>
+        <p><strong>IMDB Rating:</strong> ${movie["imdbrating"]}/10</p>
+    `
 
-    for(key in object){
-        const h2 = document.createElement("h2")
-        movieInfo.appendChild(h2)
-        h2.innerHTML = key;
-        if (key != 'poster'){
-            const p = document.createElement("p")
-            p.innerHTML = `${object[key]}`
-            movieInfo.appendChild(p)
-        }
-        else{
-            const img = document.createElement("img");
-            img.setAttribute("src", object[key])
-            movieInfo.appendChild(img)
-        }
-    }
+    // for(key in object){
+    //     const h2 = document.createElement("h2")
+    //     movieInfo.appendChild(h2)
+    //     h2.innerHTML = key;
+    //     if (key != 'poster'){
+    //         const p = document.createElement("p")
+    //         p.innerHTML = `${object[key]}`
+    //         movieInfo.appendChild(p)
+    //     }
+    //     else{
+    //         const img = document.createElement("img");
+    //         img.setAttribute("src", object[key])
+    //         movieInfo.appendChild(img)
+    //     }
+    // }
 }
 
-generateTableRow()
+generateCards()
 displayMovieInfo()
