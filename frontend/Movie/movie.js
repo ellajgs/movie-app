@@ -2,6 +2,7 @@ const movieHeader = document.querySelector("#movie-header")
 const tableBody = document.querySelector("#movie-table-body")
 const backButton = document.querySelector("#back-button")
 const movieInfo = document.querySelector("#movie-info-container")
+const cardContainer = document.querySelector("#card-container")
 const token = localStorage.getItem("token")
 
 
@@ -47,7 +48,7 @@ async function getMovieReviews(){
         window.location.assign("../Login/login.html")
     }
     const responseObject = await response.json();
-    const data = responseObject.data
+    const data = responseObject
     return data
 }
 
@@ -55,16 +56,19 @@ async function getMovieReviews(){
 
 async function generateCards(){
     data = await getMovieReviews()
+    commentTitle = document.createElement("h2")
+    commentTitle.innerHTML = 'Comments:'
+    cardContainer.appendChild(commentTitle)
+    
         
     for (let i = 0; i < data.length; i++){
             let reviewObject = data[i]
 
             card = document.createElement("div")
-            card.setAttribute("class", "card mb-3")
-            card.setAttribute("style","max-width: 540px;")
+            card.setAttribute("class", "card mb-3 ")
 
             row = document.createElement("div")
-            row.setAttribute("class", "row g-0")
+            row.setAttribute("class", "row g-0 ")
             card.appendChild(row)
 
             rating = document.createElement("div")
@@ -77,20 +81,20 @@ async function generateCards(){
             row.appendChild(mainBody)
 
             cardBody = document.createElement("div")
-            cardBody.setAttribute("class", "card-body")
+            cardBody.setAttribute("class", "card-body ")
             mainBody.appendChild(cardBody)
 
             username = document.createElement("h5")
             username.setAttribute("class", "card-title")
-            username.innerHTML = reviewObject["username"]
+            username.innerHTML = `${reviewObject["username"]}`
             cardBody.appendChild(username)
 
             comment = document.createElement("p")
             comment.setAttribute("class", "card-text")
-            comment.innerHTML = reviewObject["comments"]
+            comment.innerHTML = `${reviewObject["comments"]}`
             cardBody.appendChild(comment)
 
-            card_container.appendChild(card)
+            cardContainer.appendChild(card)
 
     }
     

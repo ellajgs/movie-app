@@ -26,7 +26,7 @@ const createMovieCard = (movie) => {
   col.className = 'col';
 
   let link = document.createElement('a');
-  link.href = '/frontend/moviePython/movie.html';
+  link.href = '/frontend/Movie/Movie.html';
   link.className = 'text-decoration-none';
 
   link.addEventListener('click', () => {
