@@ -3,6 +3,11 @@ document.getElementById("welcome-text").innerHTML = "Welcome, " + userName + "!"
 
 // const switchLanguage = document.querySelectorAll(".dropdown-item").forEach(item => {})
 
+// document.getElementById("row-1").addEventListener("click", () => {
+//     localStorage.setItem("movie-name", "The Dark Knight")
+//     window.location.assign("../moviePython/movie.html")
+
+
 const movies = [{
     title: "test",
     rating: 5,
@@ -18,7 +23,7 @@ const createMovieCard = (movie) => {
   col.className = 'col';
 
   let link = document.createElement('a');
-  link.href = '/frontend/Movie/Movie.html';
+  link.href = '/frontend/moviePython/movie.html';
   link.className = 'text-decoration-none';
 
   let card = document.createElement('div');

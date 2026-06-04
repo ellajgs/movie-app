@@ -7,8 +7,36 @@ backButton.addEventListener("click", () => {
     window.location.assign("../Home/Home.html")
 })
 
-function getMovieInfo(){}
-function getMovieReviews(){}
+async function getMovieInfo(){
+    const movieName = localStorage.getItem("movie-name")
+    const options = {
+        method: "GET",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    }
+    
+    const response = await fetch(`http://localhost:3000/movies/search?title=${encodeURIComponent(movieName)}`, options);
+  
+    if (!response.ok) {
+        window.location.assign("../Login/login.html")
+    }
+    const responseObject = await response.json();
+    const data = responseObject.data
+    return data
+}
+async function getMovieReviews(){
+
+    const response = await fetch(`http://localhost:3000/movies/search`, options);
+  
+    if (!response.ok) {
+        window.location.assign("../Login/login.html")
+    }
+    const responseObject = await response.json();
+    const data = responseObject.data
+    return data
+}
 
 
 
@@ -41,16 +69,40 @@ function generateTableRow(){
     
 }
 
-function displayMovieInfo(){
-    const img = document.createElement("img");
-    const text = document.createElement("p");
+async function displayMovieInfo(){
+    // let object = {
+    //     poster: "source-linkwew",
+    //     title: "testMovie",
+    //     actors: "testActor1, testActor2",
+    //     plot: "asdojdjasndjokas",
+    //     imdbRating: 5
+    // };
+    const movie = await getMovieInfo()
 
+    const object = {
+        poster: movie.poster,
+        title: movie.title,
+        actors: movie.actors,
+        plot: movie.plot,
+        imdbRating: movie.imdbRating
+    }
 
-    movieInfo.textContent
-    questionText.textContent = dialogue
-    gameContainer.appendChild(speechBubble)
-    speechBubble.appendChild(questionText)
-
+    for(key in object){
+        const h2 = document.createElement("h2")
+        movieInfo.appendChild(h2)
+        h2.innerHTML = key;
+        if (key != 'poster'){
+            const p = document.createElement("p")
+            p.innerHTML = `${object[key]}`
+            movieInfo.appendChild(p)
+        }
+        else{
+            const img = document.createElement("img");
+            img.setAttribute("src", object[key])
+            movieInfo.appendChild(img)
+        }
+    }
 }
 
 generateTableRow()
+displayMovieInfo()

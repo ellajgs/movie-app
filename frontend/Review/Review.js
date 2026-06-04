@@ -1,4 +1,7 @@
-const id = localStorage.getItem("userID")
+
+const id = localStorage.getItem("id")
+const token = localStorage.getItem("token")
+
 
 document.getElementById("review-form").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -9,7 +12,8 @@ document.getElementById("review-form").addEventListener("submit", async (e) => {
         method: "POST",
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
             movieName: form.get("movie-name"),
@@ -19,11 +23,12 @@ document.getElementById("review-form").addEventListener("submit", async (e) => {
         })
     }
 
-    const response = await fetch("http://localhost:3000/movie/", options);
+    const response = await fetch("http://localhost:3000/reviews/create", options);
+    console.log("status:", response.status)
     const data = await response.json();
     console.log(data);
 
-    if (response.status == 200) {
+    if (response.status == 201) {
         alert("Review posted")
       } else {
         alert(data.error);

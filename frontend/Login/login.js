@@ -2,7 +2,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const form = new FormData(e.target);
-
+    console.log(form)
     const options = {
         method: "POST",
         headers: {
@@ -15,14 +15,14 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
         })
     }
 
-    const response = await fetch("http://localhost:3000/login/login", options);
+    const response = await fetch("http://localhost:3000/users/login", options);
     const data = await response.json();
     console.log(data);
 
     if (response.status == 200) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("username", data.username)
-        localStorage.setItem("id", data.id)
+        localStorage.setItem("username", data.user.username)
+        localStorage.setItem("id", data.user.id)
         window.location.assign("../Home/Home.html");
       } else {
         alert(data.error);
