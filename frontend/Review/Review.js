@@ -24,7 +24,7 @@ document.getElementById("review-form").addEventListener("submit", async (e) => {
         })
     }
 
-    const response = await fetch("http://localhost:3000/reviews/create", options);
+    const response = await fetch("http://localhost:3001/reviews/create", options);
     console.log("status:", response.status)
     const data = await response.json();
     console.log(data);
