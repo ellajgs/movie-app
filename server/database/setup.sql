@@ -14,7 +14,9 @@ CREATE TABLE users (
 CREATE TABLE movies (
     id INT GENERATED ALWAYS AS IDENTITY,
     title VARCHAR(100) UNIQUE,
-    imdbrating NUMERIC(3,1),
+    imdbrating FLOAT,
+    rtrating FLOAT,
+    mcrating FLOAT,
     imdbid VARCHAR,
     movie_year INT,
     poster VARCHAR,
@@ -46,6 +48,8 @@ VALUES
 INSERT INTO movies (
     title,
     imdbrating,
+    rtrating,
+    mcrating,
     imdbid,
     movie_year,
     poster,
@@ -53,11 +57,11 @@ INSERT INTO movies (
     actors
 )
 VALUES
-('The Dark Knight', 90, 'tt0468569', 2008, 'https://example.com/dark-knight.jpg', 'Christopher Nolan', 'Christian Bale, Heath Ledger, Aaron Eckhart'),
-('Inception', 88, 'tt1375666', 2010, 'https://example.com/inception.jpg', 'Christopher Nolan', 'Leonardo DiCaprio, Joseph Gordon-Levitt, Elliot Page'),
-('Interstellar', 86, 'tt0816692', 2014, 'https://example.com/interstellar.jpg', 'Christopher Nolan', 'Matthew McConaughey, Anne Hathaway, Jessica Chastain'),
-('Get Out', 78, 'tt5052448', 2017, 'https://example.com/get-out.jpg', 'Jordan Peele', 'Daniel Kaluuya, Allison Williams, Bradley Whitford'),
-('Parasite', 85, 'tt6751668', 2019, 'https://example.com/parasite.jpg', 'Bong Joon Ho', 'Song Kang-ho, Lee Sun-kyun, Cho Yeo-jeong');
+('The Dark Knight', 91, 94, 85, 'tt0468569', 2008, 'https://example.com/dark-knight.jpg', 'Christopher Nolan', 'Christian Bale, Heath Ledger, Aaron Eckhart'),
+('Inception', 88, 87, 74, 'tt1375666', 2010, 'https://example.com/inception.jpg', 'Christopher Nolan', 'Leonardo DiCaprio, Joseph Gordon-Levitt, Elliot Page'),
+('Interstellar', 87, 73, 74, 'tt0816692', 2014, 'https://example.com/interstellar.jpg', 'Christopher Nolan', 'Matthew McConaughey, Anne Hathaway, Jessica Chastain'),
+('Get Out', 78, 98, 85, 'tt5052448', 2017, 'https://example.com/get-out.jpg', 'Jordan Peele', 'Daniel Kaluuya, Allison Williams, Bradley Whitford'),
+('Parasite', 85,99,97, 'tt6751668', 2019, 'https://example.com/parasite.jpg', 'Bong Joon Ho', 'Song Kang-ho, Lee Sun-kyun, Cho Yeo-jeong');
 
 -- Seed Reviews
 INSERT INTO reviews (user_id, movie_id, user_rating, comments)
@@ -134,4 +138,3 @@ VALUES
 -- (1, 1, 9.5, 'Amazing film'),
 -- (2, 2, 8.5, 'Really clever story'),
 -- (3, 3, 9.0, 'Beautiful sci-fi movie');
-
