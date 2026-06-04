@@ -50,12 +50,12 @@ const testData = [
 async function refreshDropdowns() {
     console.log("Refresh Triggered");
     const response = await fetch(`http://localhost:3001/movies/all`)
-    const data = response.json()
+    const data = await response.json()
 //   const data = await Promise.resolve(testData);
-
+ console.log(data);
   data.forEach(movie => {
     const option = document.createElement("option");
-    option.value = movie.title;
+    option.value = movie.title +'   -   ('+ movie.movie_year + ')';
     movieList.appendChild(option);
   });
 }

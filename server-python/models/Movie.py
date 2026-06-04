@@ -47,7 +47,7 @@ class Movie:
         return dict(zip(columns, row))
 
     @staticmethod
-    def find_or_add(title):
+    def find_or_add(title,year):
         conn = get_db()
         cur = conn.cursor()
 
@@ -138,7 +138,7 @@ class Movie:
         print("hit model")
         conn = get_db()
         cur = conn.cursor()
-        cur.execute("SELECT title FROM movies;")
+        cur.execute("SELECT title,movie_year FROM movies;")
         rows = cur.fetchall()
         columns = [desc[0] for desc in cur.description]
         cur.close()
