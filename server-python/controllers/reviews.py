@@ -39,7 +39,7 @@ def create_review():
         body = request.json
 
         
-        movie = Movie.find_or_add(body['movieName'])
+        movie = Movie.find_or_add(body['movieName'],body['movieYear'])
 
         data = {
             'user_id': user['user_id'],

@@ -28,7 +28,7 @@ class Movie:
         }
 
     @staticmethod #like static async in js
-    def find_or_add(title):
+    def find_or_add(title,year):
         conn = get_db()
         cur = conn.cursor() # these two lines are like db.query
 
@@ -41,7 +41,9 @@ class Movie:
             conn.close()
             return Movie(dict(zip(columns, row)))
 
-        response = requests.get(f"https://www.omdbapi.com/?t={title}&apikey={OMDB_API_KEY}") # f is like template literals in js
+        year_query = f'y&{year}' if year else ''
+
+        response = requests.get(f"https://www.omdbapi.com/?t={title}{year_query}&apikey={OMDB_API_KEY}") # f is like template literals in js
         data = response.json()
 
         if data.get('Response') == 'False':
