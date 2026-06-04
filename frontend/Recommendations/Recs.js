@@ -4,7 +4,7 @@ document.getElementById("username").textContent = userName
 // const switchLanguage = document.querySelectorAll(".dropdown-item").forEach(item => {})
 
 const recommendations = async () => {
-    const response = await fetch("http://localhost:3001/recs",{
+    const response = await fetch("http://localhost:3000/recs",{
         method: "GET",
         headers: {
             "Accept": "application/json",
