@@ -40,17 +40,24 @@ document.getElementById("home-nav").addEventListener("click", () => {
     window.location.assign("../Home/Home.html")
 })
 
-const movieList = document.getElementById('movie-dropdown')
+const movieList = document.getElementById('movies')
+const testData = [
+    {title:"test 1"},
+    {title:"test 2"},
+    {title:"test 3"}
+]
 
 async function refreshDropdowns() {
     console.log("Refresh Triggered");
     const nameArr = []
-    const response = await fetch(`https://localhost:3001/movies/all`)
-    const data = response.json()
+    // const response = await fetch(`https://localhost:3001/movies/all`)
+    // const data = response.json()
+    const data = testData.json()
     .then((data)=>{
     for(let i=0; i<data.length; i++) {
         nameArr.push(data[i].name)
     }
+    console.log(nameArr);
     return nameArr
     })
     
