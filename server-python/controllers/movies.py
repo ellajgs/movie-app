@@ -15,7 +15,7 @@ def search_movie():
     if not title:
         return jsonify({'error': 'Title is required'}), 400
     try:
-        movie = Movie.find_or_add(title)
+        movie = Movie.find_or_add(title, year="")
         return jsonify(movie.to_dict()), 200 #like res.status(200).json(movie)
     except Exception as e: #like catch
         return jsonify({'error': str(e)}), 404
