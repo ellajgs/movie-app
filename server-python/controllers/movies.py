@@ -32,35 +32,11 @@ def refresh_rating(movie_id):
     
     #extra note - flask does async/await by default so no need to add
 
-@movies_bp.route('/suggestions', methods=['GET'])
-def movie_suggestions():
-    title = request.args.get('title')
-
-    if not title:
-        return jsonify([]), 200
+@movies_bp.route('/all', methods=['GET'])
+def get_movie_all():
 
     try:
-        response = requests.get(
-            "https://www.omdbapi.com/",
-            params={
-                "s": title,
-                "type": "movie",
-                "apikey": os.getenv("OMDB_API_KEY")
-            }
-        )
-
-        data = response.json()
-
-        if data.get("Response") == "False":
-            return jsonify([]), 200
-
-        movies = []
-
-        for movie in data.get("Search", []):
-            movies.append({
-                "title": movie.get("Title"),
-            })
-
+        movies = Movie.get_all_movies()
         return jsonify(movies), 200
 
     except Exception as e:
