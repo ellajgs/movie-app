@@ -31,6 +31,7 @@ document.getElementById("review-form").addEventListener("submit", async (e) => {
 
     if (response.status == 201) {
         alert("Review posted")
+        window.location.assign("../Home/Home.html")
       } else {
         alert(data.error);
       }
