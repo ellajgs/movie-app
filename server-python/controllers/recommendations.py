@@ -33,8 +33,8 @@ def get_recommendations():
         Respond ONLY with a JSON array, no other text, no markdown, no backticks.
         Format exactly like this:
         [
-            {{"title": "Movie Title", "year": "2001", "reason": "Why they would like it"}},
-            {{"title": "Movie Title", "year": "2009", "reason": "Why they would like it"}}
+            {{"title": "Movie Title", "movie_year": "2001", "reason": "Why they would like it"}},
+            {{"title": "Movie Title", "movie_year": "2009", "reason": "Why they would like it"}}
         ]"""
         
         genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
@@ -54,13 +54,15 @@ def get_recommendations():
             try:
                 movie = Movie.find_or_add(rec['title'])
                 movie_id = movie.id
-            except:
+                print("SUCCESS - movie_id:", movie_id)
+            except Exception as e:
+                print("FAILED - find_or_add error:", e) 
                 movie_id = None
 
             enriched.append({
             'movie_id': movie_id,
             'title': rec['title'],
-            'year': rec['year'],
+            'movie_year': rec.get('movie_year') or rec.get('year', 'N/A'),
             'reason': rec['reason'],
             'poster': omdb_data.get('Poster', ''),
             'imdbrating': omdb_data.get('imdbRating', 'N/A'),

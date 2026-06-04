@@ -47,7 +47,7 @@ class Movie:
         return dict(zip(columns, row))
 
     @staticmethod
-    def find_or_add(title):
+    def find_or_add(title, year = None):
         conn = get_db()
         cur = conn.cursor()
 
@@ -92,7 +92,7 @@ class Movie:
             conn.close()
             return Movie(movie_data)  # ← return was missing from if block
 
-        year_query = f'y={year}' if year else ''
+        year_query = f'&y={year}' if year else ''
 
         response = requests.get(f"https://www.omdbapi.com/?t={title}{year_query}&apikey={OMDB_API_KEY}") # f is like template literals in js
         data = response.json()
@@ -130,7 +130,7 @@ class Movie:
         conn.commit()
         cur.close()
         conn.close()
-        return Movie(movie_data) # this whole bit is turning what we got back from the db rows into an object with key value pairs
+        return Movie(dict(zip(columns, row))) # this whole bit is turning what we got back from the db rows into an object with key value pairs
 
 
     @staticmethod

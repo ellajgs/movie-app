@@ -66,7 +66,7 @@ const createMovieCard = (movie) => {
   let year = document.createElement("p");
   year.className = "mb-0 p-2 text-muted";
   year.style.cssText = "font-size: 12px; text-align: left;";
-  year.innerText = movie.year;
+  year.innerText = movie.movie_year;
 
   cardBody.appendChild(title);
   card.appendChild(img);
