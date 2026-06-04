@@ -23,15 +23,16 @@
 
     <header>
         <nav class="d-flex justify-content-between align-items-center p-3 mb-5" style="background-color: #474448;">
-            <a href="/frontend/Review/Review.html" class="text-light btn rounded-pill h-80 w-25 text-center"
-                style="background-color:#2d232e">New Review</a>
-            
+            <a href="/frontend/Home/Home.html" class="text-light btn rounded-pill h-80 w-25 text-center"
+                style="background-color:#2d232e">Home</a>
+
             <div class="dropdown w-25">
-                <a class="text-light btn rounded-pill h-80 w-100 text-center dropdown-toggle" style="background-color:#2d232e" href="#"
-                    role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="text-light btn rounded-pill h-80 w-100 text-center dropdown-toggle"
+                    style="background-color:#2d232e" href="#" role="button" id="dropdownMenuLink"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Language
                 </a>
-            
+
                 <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" value="english" href="#">🇬🇧</a>
                     <a class="dropdown-item" value="spanish" href="#">🇪🇸</a>
@@ -44,7 +45,7 @@
                 style="background-color:#534b52" id="logout-nav">Logout</a>
         </nav>
 
-        
+
     </header>
 
     <!-- Home Page Content-->
@@ -53,20 +54,14 @@
         <!-- Welcome User Content -->
         <div class="container text-center">
 
-            <!-- Welcome User Message -->
-            <div class="mb-5">
-                <h1 class="mb-3  rounded-4 p-2 mb-2" id="welcome-text">Welcome</h1>
-                <!-- , <span id="user-name">'name'</span></h1> -->
-            </div>
-
             <!-- My Movies -->
             <div class="mb-4">
                 <div class="text-white rounded-4 p-2 mb-2 align-left" style="background-color: #474448">
-                    <h4 class="mb-0">My Movies</h4>
+                    <h4 class="mb-0"> We think you would like these...</h4>
                 </div>
 
                 <!-- Test grid -->
-                <div class="rounded-4 p-3" style="background-color: #9b9b9b;">
+                <div class="rounded-4 p-3" style="background-color: #3b2849;">
                     <div class="row row-cols-2 g-3" id="movies-grid">
                     </div>
                 </div>
@@ -75,7 +70,7 @@
                 <!-- <div class="rounded-4 p-3" style="background-color: #9b9b9b;">
                     <div class="row row-cols-2 g-3">
                         <div class="col">
-                            <a href="/frontend/moviePython/movie.html" class="text-decoration-none">
+                            <a href="/frontend/Movie/Movie.html" class="text-decoration-none">
                                 <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
                                     <img src="/frontend/Assets/dark-knight-poster.jpeg" class="card-img-top" alt="The Dark Knight poster"
                                         style="height: 200 px; object-fit: cover;">
@@ -132,9 +127,8 @@
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="Home.py"></script>
-    <script src="Home.js"></script>
-    
+    <script src="Recs.js"></script>
+
 
 </body>
 

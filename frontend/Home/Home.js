@@ -1,5 +1,5 @@
-// const userName = localStorage.getItem("username")
-// document.getElementById("username").textContent = userName
+const userName = localStorage.getItem("username")
+document.getElementById("welcome-text").innerHTML = "Welcome, " + userName + "!"
 
 // const switchLanguage = document.querySelectorAll(".dropdown-item").forEach(item => {})
 
@@ -118,7 +118,10 @@ const renderMovieCards = () => {
 };
 
 
-const logoutBtn = document.getElementById("logout-nav").addEventListener("click", (e) => {
+document.addEventListener("DOMContentLoaded", () => {
+    userName
+    renderMovieCards()
+    document.getElementById("logout-nav").addEventListener("click", (e) => {
     e.preventDefault()
     localStorage.removeItem("user")
     window.location.assign("../Login/Login.html")
