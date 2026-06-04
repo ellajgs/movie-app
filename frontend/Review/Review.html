@@ -29,9 +29,9 @@
                         <h4 class="p-4">New Review</h4>
                         <form id="review-form">
                             <div class="mb-3 mx-auto w-50">
-                                <label for="movie-name" class="form-label">Movie name</label>
+                                <label for="movie-name" class="form-label" data-i18n="movieName">Movie name</label>
                                 <div class = "input-group">
-                                    <input type="movie-name" class="form-control w-75" list="movies" id="movie-name" name="movie-name" placeholder="Select a movie, or type one if it isn't here"/>
+                                    <input type="movie-name" class="form-control w-75" list="movies" id="movie-name" name="movie-name" placeholder="Select a movie, or type one if it isn't here" data-i18n="selectMovie"/>
                                         <datalist id="movies">
                                             <option value="Chocolate"></option>
                                             <option value="Coconut"></option>
@@ -45,13 +45,13 @@
                                             <li><a class="dropdown-item">Another action</a></li>
                                             <li><a class="dropdown-item">Something else here</a></li>
                                         </ul> -->
-                                          <select class="form-select w-25" id="movie-year" name="movie-year">
+                                          <select class="form-select w-25" id="movie-year" name="movie-year" data-i18n="year">
                                             <option selected>Year</option>
                                         </select>
                                 </div>
                             </div>
                             <div class="mb-3 mx-auto w-50">
-                                <label for="movie-score" class="form-label">Movie score</label>
+                                <label for="movie-score" class="form-label" data-i18n="movieScore">Movie score</label>
                                 <select class="form-select" aria-label="Default select example" id="movie-score" name="movie-score">
                                     <option selected>Movie Score</option>
                                     <option value="1">1</option>
@@ -62,13 +62,13 @@
                                 </select>
                             </div>
                             <div class="mb-3 mx-auto w-50">
-                                <label for="comments" class="form-label">Comments</label>
-                                <input type="comments" class="form-control" id="comments" name="comments" placeholder="Your comments...">
+                                <label for="comments" class="form-label" data-i18n="comments">Comments</label>
+                                <input type="comments" class="form-control" id="comments" name="comments" placeholder="Your comments..." data-i18n="yourComments">
                             </div>
 
-                            <button type="submit" class="btn m-2" style="background-color: #534b52; color: #f1f0ea">Submit</button>
+                            <button type="submit" class="btn m-2" style="background-color: #534b52; color: #f1f0ea" data-i18n="submit">Submit</button>
                         </form>
-                        <button type="button" class="btn m-2" style="background-color: #534b52; color: #f1f0ea" id="home-nav">Home</button>
+                        <button type="button" class="btn m-2" style="background-color: #534b52; color: #f1f0ea" id="home-nav" data-i18n="home">Home</button>
                         <p></p>
                     </div>
                 </div>

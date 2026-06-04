@@ -27,20 +27,20 @@
                 </div>
                 <div class="col-7 rounded-5" style="background-color:#2d232e" >
                     <div>
-                        <h4 class="p-4">Login here</h4>
+                        <h4 class="p-4" data-i18n="loginHereBtn">Login here</h4>
                         <form id="login-form">
                             <div class="mb-3 mx-auto w-50">
-                                <label for="username" class="form-label">Username</label>
+                                <label for="username" class="form-label" data-i18n="username">Username</label>
                                 <input type="username" class="form-control" id="username" name="username" placeholder="Username">
                             </div>
                             <div class="mb-3 mx-auto w-50">
-                                <label for="password" class="form-label">Password</label>
+                                <label for="password" class="form-label" data-i18n="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                             </div>
 
-                            <button type="submit" class="btn m-2" style="background-color: #534b52; color: #f1f0ea">Submit</button>
+                            <button type="submit" class="btn m-2" style="background-color: #534b52; color: #f1f0ea" data-i18n="submit">Submit</button>
                         </form>
-                        <button type="button" class="btn m-2" style="background-color: #534b52; color: #f1f0ea" id="register-nav">Register Here</button>
+                        <button type="button" class="btn m-2" style="background-color: #534b52; color: #f1f0ea" id="register-nav" data-i18n="registerHere">Register Here</button>
                         <p></p>
                     </div>
                 </div>
@@ -49,6 +49,8 @@
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/i18next/i18next.min.js"></script>
+        <script src="/frontend/i18n.js"></script>
         <script src="./login.js" async defer></script>
     </body>
 </html>
