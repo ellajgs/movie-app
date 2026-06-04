@@ -29,7 +29,7 @@ def get_recommendations():
         
         prompt = f"""Based on these movies a user has watched and their reviews:
         {movie_list}
-        Recommend 5 movies they would enjoy. For each one give:
+        Recommend 4 movies they would enjoy. For each one give:
         Respond ONLY with a JSON array, no other text, no markdown, no backticks.
         Format exactly like this:
         [

@@ -48,6 +48,7 @@ class Movie:
             raise Exception("Movie not found")
         return dict(zip(columns, row))
     
+    @staticmethod
     def get_combined_rating(id):
         conn = get_db()
         cur = conn.cursor()
@@ -164,3 +165,26 @@ class Movie:
         if not rows:
             return []
         return [dict(zip(columns, row)) for row in rows]
+    
+    @staticmethod
+    def get_by_id(movie_id):
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM movies WHERE id = %s;", (movie_id,))
+        row = cur.fetchone()
+        columns = [desc[0] for desc in cur.description]
+        cur.close()
+        conn.close()
+        if not row:
+            raise Exception("Movie not found")
+    
+        movie_data = dict(zip(columns, row))
+    
+        avg_site_rating = Movie.get_average_rating(movie_id)
+        movie_data["avg_rating"] = avg_site_rating["avg_rating"]
+    
+        avg_combined_rating = Movie.get_combined_rating(movie_id)
+        combined = avg_combined_rating["combined_rating"]
+        movie_data["combined_rating"] = round(combined, 1) if combined else None
+    
+        return Movie(movie_data)

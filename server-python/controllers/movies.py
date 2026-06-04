@@ -15,7 +15,7 @@ def search_movie():
     if not title:
         return jsonify({'error': 'Title is required'}), 400
     try:
-        movie = Movie.find_or_add(title, year="")
+        movie = Movie.find_or_add(title, year=None)
         return jsonify(movie.to_dict()), 200 #like res.status(200).json(movie)
     except Exception as e: #like catch
         return jsonify({'error': str(e)}), 404
@@ -52,3 +52,13 @@ def get_movie_all():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+    
+# GET /movies/<movie_id>
+@movies_bp.route('/<int:movie_id>', methods=['GET'])
+def get_movie(movie_id):
+    try:
+        movie = Movie.get_by_id(movie_id)
+        return jsonify(movie.to_dict()), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 404

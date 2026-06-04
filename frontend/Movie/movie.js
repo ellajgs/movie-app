@@ -14,6 +14,7 @@ backButton.addEventListener("click", () => {
 
 async function getMovieInfo(){
     const movieName = localStorage.getItem("movie-name")
+    const movie_id = localStorage.getItem("movie_id")
     const options = {
         method: "GET",
         headers: {
@@ -23,17 +24,19 @@ async function getMovieInfo(){
         },
     }
     
-    const response = await fetch(`http://localhost:3001/movies/search?title=${encodeURIComponent(movieName)}`, options);
-  
+    // use ID endpoint if available, fall back to search
+    const url = movie_id && movie_id !== "null"
+        ? `http://localhost:3001/movies/${movie_id}`
+        : `http://localhost:3001/movies/search?title=${encodeURIComponent(movieName)}`
+    
+    const response = await fetch(url, options);
     if (!response.ok) {
         window.location.assign("../Login/login.html")
     }
-    const responseObject = await response.json();
-    const data = responseObject
-    return data
+    return await response.json();
 }
 async function getMovieReviews(){
-    movie_id = localStorage.getItem("movie_id")
+    const movie_id = localStorage.getItem("movie_id")
 
     const options = {
         method: "GET",
@@ -121,9 +124,10 @@ async function displayMovieInfo(){
         <p><strong>Year:</strong> ${movie["movie_year"]}</p>
         <p><strong>Plot:</strong> ${movie["plot"] === null ? "N/A" : movie["plot"]}</p>
         <p><strong>IMDB Rating:</strong> ${movie["imdbrating"]}/10</p>
-        <p><strong>Rotten Tomatoes:</strong> ${movie["rtrating"]}/10</p>
-        <p><strong>Metacritic:</strong> ${movie["mcrating"]}/10</p>
-        <p><strong>Avg Site Rating:</strong> ${movie["avg_rating"]}/5</p>
+        <p><strong>Rotten Tomatoes:</strong> ${movie["rtrating"]}/100</p>
+        <p><strong>Metacritic:</strong> ${movie["mcrating"]}/100</p>
+        <p><strong>Combined Rating:</strong> ${movie["combined_rating"] ?? "N/A"}/100</p>
+        <p><strong>Avg Site Rating:</strong> ${movie["avg_rating"] ?? "N/A"}/5</p>
 
     `
 
