@@ -1,6 +1,6 @@
 const movieHeader = document.querySelector("#movie-header")
 const tableBody = document.querySelector("#movie-table-body")
-const backButton = document.querySelector("#back-button")
+const backButton = document.querySelector(".back-button")
 const movieInfo = document.querySelector("#movie-info-container")
 const cardContainer = document.querySelector("#card-container")
 const token = localStorage.getItem("token")
