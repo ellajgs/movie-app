@@ -55,7 +55,8 @@ async function refreshDropdowns() {
  console.log(data);
   data.forEach(movie => {
     const option = document.createElement("option");
-    option.value = movie.title +'   -   ('+ movie.movie_year + ')';
+    option.textContent = movie.title +'   -   ('+ movie.movie_year + ')'
+    option.value = movie.title;
     movieList.appendChild(option);
   });
 }
