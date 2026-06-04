@@ -8,6 +8,12 @@ document.getElementById("review-form").addEventListener("submit", async (e) => {
 
     const form = new FormData(e.target);
 
+    const score = form.get("movie-score");
+    if (!score || isNaN(score)) {
+        alert("Please select a valid movie score");
+        return;
+    }
+
     const options = {
         method: "POST",
         headers: {
