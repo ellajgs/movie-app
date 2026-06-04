@@ -30,7 +30,25 @@
                         <form id="review-form">
                             <div class="mb-3 mx-auto w-50">
                                 <label for="movie-name" class="form-label">Movie name</label>
-                                <input type="movie-name" class="form-control" id="movie-name" name="movie-name" placeholder="Movie">
+                                <div class = "input-group">
+                                    <input type="movie-name" class="form-control w-75" list="movies" id="movie-name" name="movie-name" placeholder="Select a movie, or type one if it isn't here"/>
+                                        <datalist id="movies">
+                                            <option value="Chocolate"></option>
+                                            <option value="Coconut"></option>
+                                            <option value="Mint"></option>
+                                            <option value="Strawberry"></option>
+                                            <option value="Vanilla"></option>
+                                        </datalist>
+                                    <!-- <button id="movie-year" name="movie-year" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Year</button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item">Action</a></li>
+                                            <li><a class="dropdown-item">Another action</a></li>
+                                            <li><a class="dropdown-item">Something else here</a></li>
+                                        </ul> -->
+                                          <select class="form-select w-25" id="movie-year" name="movie-year">
+                                            <option selected>Year</option>
+                                        </select>
+                                </div>
                             </div>
                             <div class="mb-3 mx-auto w-50">
                                 <label for="movie-score" class="form-label">Movie score</label>
@@ -41,11 +59,6 @@
                                     <option value="3">3</option>
                                     <option value="4">4</option>
                                     <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
                                 </select>
                             </div>
                             <div class="mb-3 mx-auto w-50">

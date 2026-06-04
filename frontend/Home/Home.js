@@ -8,13 +8,16 @@ document.getElementById("welcome-text").innerHTML = "Welcome, " + userName + "!"
 //     window.location.assign("../moviePython/movie.html")
 
 
-const movies = [{
-    title: "test",
-    rating: 5,
-    img: "",
-    director: "director",
-    year: "2026"
-}]
+// const movies = [{
+//     title: "test",
+//     rating: 5,
+//     img: "",
+//     director: "director",
+//     year: "2026"
+// }]
+
+const token = localStorage.getItem("token");
+const user_id = localStorage.getItem("id")
 
 let movieGrid;
 
@@ -23,8 +26,13 @@ const createMovieCard = (movie) => {
   col.className = 'col';
 
   let link = document.createElement('a');
-  link.href = '/frontend/moviePython/movie.html';
+  link.href = '/frontend/Movie/Movie.html';
   link.className = 'text-decoration-none';
+
+  link.addEventListener('click', () => {
+        localStorage.setItem("movie-name", movie.title);
+        localStorage.setItem("movie_id", movie.movie_id);
+    })
 
   let card = document.createElement('div');
   card.className = 'card border-0 shadow-sm rounded-3 overflow-hidden';
@@ -44,7 +52,7 @@ const createMovieCard = (movie) => {
 
   let rating = document.createElement('span');
   rating.className = 'badge rounded-pill bg-success-subtle text-success flex-shrink-0';
-  rating.innerText = movie.rating;
+  rating.innerText = movie.user_rating;
 
   let director = document.createElement('p');
   director.className = 'mb-0 p-2 text-muted';
@@ -65,7 +73,40 @@ const createMovieCard = (movie) => {
   link.appendChild(card);
   col.appendChild(link);
   movieGrid.appendChild(col);
+  card.addEventListener("click", () => {
+    localStorage.setItem("movie_name", movie.title)
+  })
 };
+
+async function loadUserMovies() {
+    try {
+        const response = await fetch(`http://localhost:3001/reviews/all/${user_id}`, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            window.location.assign("../Login/Login.html");
+            return;
+        }
+
+        const movies = await response.json();
+        movieGrid = document.getElementById('movies-grid');
+        
+        if (movies.length === 0) {
+            movieGrid.innerHTML = "<p class='text-muted'>No movies yet — add a review!</p>";
+            return;
+        }
+
+        movies.forEach(movie => createMovieCard(movie));
+
+    } catch(err) {
+        console.error("Failed to load movies:", err);
+    }
+}
 
 const renderMovieCards = () => {
   if (movieGrid) {
@@ -86,5 +127,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("logout-nav").addEventListener("click", (e) => {
     e.preventDefault()
     localStorage.removeItem("user")
-    window.location.assign("../Login/Login.html")})
+    window.location.assign("../Login/Login.html")
 })
+
+document.addEventListener("DOMContentLoaded", () => {
+    // userName
+    loadUserMovies()
+})})
