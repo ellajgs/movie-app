@@ -45,7 +45,7 @@ const movieList = document.getElementById('movie-dropdown')
 async function refreshDropdowns() {
     console.log("Refresh Triggered");
     const nameArr = []
-    const response = await fetch(`https://fruit-api-14b3.onrender.com/fruits/`)
+    const response = await fetch(`https://localhost:3001/movies/all`)
     const data = response.json()
     .then((data)=>{
     for(let i=0; i<data.length; i++) {

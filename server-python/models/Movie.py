@@ -94,3 +94,17 @@ class Movie:
         conn.close()
         return Movie(movie_data) # this whole bit is turning what we got back from the db rows into an object with key value pairs
 
+
+    @staticmethod
+    def get_all_movies():
+        print("hit model")
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute("SELECT title FROM movies;")
+        rows = cur.fetchall()
+        columns = [desc[0] for desc in cur.description]
+        cur.close()
+        conn.close()
+        if not rows:
+            return []
+        return [dict(zip(columns, row)) for row in rows]
